@@ -13,7 +13,7 @@ module.exports = (robot) ->
     if user == 'nabnab'
       msg.send "ナブチ様　顔でかいデス"
 
-
+  # Topics
   new cron '0 0 15 * * *', () ->
     robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
@@ -30,6 +30,15 @@ module.exports = (robot) ->
   robot.hear /こんにちは/i, (msg) ->
     msg.send "こんにちは　デス"
 
+  new cron '* * * * * *', () ->
+    robot.send robot.random [
+      '茶運び人形　からくり　と申します　デス',
+      'カタカタカタカタ・・・',
+      'お茶をお持ちいたしました　デス',
+      'ルンバは　からくり業界では　中の上くらい　デス'
+    ]
+  , null, true, "Asia/Tokyo"
+
   # Koiki
   new cron '0 0 9 * * *', () ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
@@ -40,7 +49,7 @@ module.exports = (robot) ->
   , null, true, "Asia/Tokyo"
 
   robot.hear /(次|つぎ)の(| |　)(小粋|koiki|こいき)(| |　)(は)いつ(|になる|になりそう|ですか)(？|\?)/i, (msg) ->
-    msg.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
+    robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
       if data.date
         msg.send('つぎは　' + moment(data.date).format('LL') + 'に開催できそう　デス')
