@@ -26,7 +26,7 @@ module.exports = (robot) ->
   , null, true, "Asia/Tokyo"
 
   # Greeting
-  robot.hear /こんばんわ/i, (msg) ->
+  robot.hear /こんばんは/i, (msg) ->
     msg.send "こんばん　デス"
   robot.hear /おはよう/i, (msg) ->
     msg.send "おはようござい　デス"
