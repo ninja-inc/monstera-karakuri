@@ -30,7 +30,7 @@ module.exports = (robot) ->
     user = msg.user?.name?.trim().toLowerCase()
 
     if user == 'nabnab'
-      msg.send msg.random [ 'ナブチ様　顔でかい　デス', 'ナブチ様　顔が大きくて　改札通れない　デス', 'ナブチ様　15m級　デス' ]
+      msg.send msg.random [ 'ナブチ様　顔でかい　デス', 'ナブチ様　顔が大きくて　改札通れない　デス', 'ナブチ様　１５ｍ級　デス' ]
 
   # # Topics
   # new cron '0 0 15 * * *', () ->
