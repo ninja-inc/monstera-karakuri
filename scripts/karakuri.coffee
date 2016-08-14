@@ -7,6 +7,8 @@ envelope = room: "C0JHEPQ94"
 
 module.exports = (robot) ->
 
+  robot.send envelope 'むくり'
+
   # Nabuchi
   robot.receive = (msg)->
     user = msg.user?.name?.trim().toLowerCase()
@@ -69,3 +71,8 @@ module.exports = (robot) ->
         msg.send('開催可能な日が　見つけられない　デス')
         msg.send('https://monstera.herokuapp.com/events/koikijs')
         msg.send('みなさん　予定の空いている日を入れてほしい　デス')
+
+  # JS eval
+  robot.hear /^js (.+)$/, (msg) ->
+    evaluated = eval msg.match[1]
+    msg.send evaluated
