@@ -18,16 +18,23 @@ module.exports = (robot) ->
   robot.respond /時間/i, (msg) ->
     msg.send "現在の時刻は　#{new Date()}　デス"
 
-  # Nabuchi
-  robot.receive = (msg) ->
-    user = msg.user?.name?.trim().toLowerCase()
+  # JS eval
+  robot.hear /^js (.+)/i, (msg) ->
+    console.log 'matched', msg.match[1]
+    evaluated = String( eval msg.match[1] )
+    console.log 'evaluated', evaluated
+    msg.send evaluated
 
-    if user == 'nabnab'
-      msg.send msg.random [
-        'ナブチ様　顔でかい　デス',
-        'ナブチ様　顔が大きくて　改札通れない　デス',
-        'ナブチ様　15m級　デス'
-      ]
+  # # Nabuchi
+  # robot.receive = (msg) ->
+  #   user = msg.user?.name?.trim().toLowerCase()
+  #
+  #   if user == 'nabnab'
+  #     msg.send msg.random [
+  #       'ナブチ様　顔でかい　デス',
+  #       'ナブチ様　顔が大きくて　改札通れない　デス',
+  #       'ナブチ様　15m級　デス'
+  #     ]
   #
   # # Topics
   # new cron '0 0 15 * * *', () ->
@@ -84,10 +91,3 @@ module.exports = (robot) ->
   #       msg.send '開催可能な日が　見つけられない　デス'
   #       msg.send 'https://monstera.herokuapp.com/events/koikijs'
   #       msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
-
-  # JS eval
-  robot.hear /^js (.+)/i, (msg) ->
-    console.log 'matched', msg.match[1]
-    evaluated = String( eval msg.match[1] )
-    console.log 'evaluated', evaluated
-    msg.send evaluated
