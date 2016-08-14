@@ -13,6 +13,15 @@ module.exports = (robot) ->
     if user == 'nabnab'
       msg.send "ナブチ様　顔でかいデス"
 
+
+  new cron '0 0 15 * * *', () ->
+    robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
+      data = JSON.parse(body)
+      robot.send('３時のオヤツ　デス')
+      robot.send(data[0].title)
+      robot.send(data[0].url)
+  , null, true, "Asia/Tokyo"
+
   # Greeting
   robot.hear /こんばんわ/i, (msg) ->
     msg.send "こんばん　デス"
