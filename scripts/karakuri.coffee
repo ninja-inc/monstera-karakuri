@@ -3,7 +3,8 @@
 moment = require 'moment'
 moment.locale 'ja'
 cron = require('cron').CronJob
-envelope = room: "C217B7QG0"
+envelope = room: "C0JHEPQ94" # general
+# envelope = room: "C217B7QG0" # test
 
 module.exports = (robot) ->
 
