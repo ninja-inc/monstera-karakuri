@@ -72,7 +72,7 @@ module.exports = (robot) ->
 
   # JS eval
   robot.hear /^js (.+)/, (msg) ->
-    console.log msg.match[1]
+    console.log 'matched', msg.match[1]
     evaluated = eval msg.match[1]
-    console.log evaluated
+    console.log 'evaluated', evaluated
     msg.send evaluated
