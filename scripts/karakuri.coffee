@@ -7,6 +7,11 @@ envelope = room: "C0JHEPQ94"
 
 module.exports = (robot) ->
 
+  # error handling
+  robot.error (err, res) ->
+    robot.logger.error err
+    robot.logger.error res
+
   # startup
   robot.send envelope, 'むくり'
 
