@@ -15,21 +15,24 @@ module.exports = (robot) ->
   # startup
   robot.send envelope, 'むくり'
 
-  # Nabuchi
-  robot.receive = (msg) ->
-    user = msg.user?.name?.trim().toLowerCase()
+  robot.respond /^time$/i, (msg) ->
+    msg.send "Server time is: #{new Date()}"
 
-    if user == 'nabnab'
-      msg.send "ナブチ様　顔でかい　デス"
-
-  # Topics
-  new cron '0 0 15 * * *', () ->
-    robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
-      data = JSON.parse(body)
-      robot.send envelope, '３時のオヤツ　デス'
-      robot.send envelope, data[0].title
-      robot.send envelope, data[0].url
-  , null, true, "Asia/Tokyo"
+  # # Nabuchi
+  # robot.receive = (msg) ->
+  #   user = msg.user?.name?.trim().toLowerCase()
+  #
+  #   if user == 'nabnab'
+  #     msg.send "ナブチ様　顔でかい　デス"
+  #
+  # # Topics
+  # new cron '0 0 15 * * *', () ->
+  #   robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
+  #     data = JSON.parse(body)
+  #     robot.send envelope, '３時のオヤツ　デス'
+  #     robot.send envelope, data[0].title
+  #     robot.send envelope, data[0].url
+  # , null, true, "Asia/Tokyo"
 
   # Greeting
   robot.hear /こんばんは/i, (msg) ->
