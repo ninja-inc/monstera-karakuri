@@ -66,13 +66,15 @@ module.exports = (robot) ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
       if data.date
-        msg.send('つぎは　' + moment(data.date).format('LL') + 'に開催できそう　デス')
+        msg.send 'つぎは　' + moment(data.date).format('LL') + 'に開催できそう　デス'
       else
-        msg.send('開催可能な日が　見つけられない　デス')
-        msg.send('https://monstera.herokuapp.com/events/koikijs')
-        msg.send('みなさん　予定の空いている日を入れてほしい　デス')
+        msg.send '開催可能な日が　見つけられない　デス'
+        msg.send 'https://monstera.herokuapp.com/events/koikijs'
+        msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
 
   # JS eval
   robot.hear /^js (.+)$/, (msg) ->
+    console.log msg.match[1]
     evaluated = eval msg.match[1]
+    console.log evaluated
     msg.send evaluated
