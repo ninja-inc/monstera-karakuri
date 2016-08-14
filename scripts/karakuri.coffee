@@ -25,22 +25,15 @@ module.exports = (robot) ->
     console.log 'evaluated', evaluated
     msg.send evaluated
 
-  # Nabuchi
-  robot.receive = (msg) ->
-    user = msg.user?.name?.trim().toLowerCase()
+  # Topics
+  new cron '0 0 15 * * *', () ->
+    robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
+      data = JSON.parse(body)
+      robot.send envelope, '３時のオヤツ　デス'
+      robot.send envelope, data[0].title
+      robot.send envelope, data[0].url
+  , null, true, "Asia/Tokyo"
 
-    if user == 'nabnab'
-      msg.send msg.random [ 'ナブチ様　顔でかい　デス', 'ナブチ様　顔が大きくて　改札通れない　デス', 'ナブチ様　１５ｍ級　デス' ]
-
-  # # Topics
-  # new cron '0 0 15 * * *', () ->
-  #   robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
-  #     data = JSON.parse(body)
-  #     robot.send envelope, '３時のオヤツ　デス'
-  #     robot.send envelope, data[0].title
-  #     robot.send envelope, data[0].url
-  # , null, true, "Asia/Tokyo"
-  #
   # # Greeting
   # robot.hear /こんばんは/i, (msg) ->
   #   msg.send "こんばん　デス"
@@ -87,3 +80,10 @@ module.exports = (robot) ->
   #       msg.send '開催可能な日が　見つけられない　デス'
   #       msg.send 'https://monstera.herokuapp.com/events/koikijs'
   #       msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
+  #
+  # # Nabuchi
+  # robot.receive = (msg) ->
+  #   user = msg.user?.name?.trim().toLowerCase()
+  #
+  #   if user == 'nabnab'
+  #     msg.send msg.random [ 'ナブチ様　顔でかい　デス', 'ナブチ様　顔が大きくて　改札通れない　デス', 'ナブチ様　１５ｍ級　デス' ]
