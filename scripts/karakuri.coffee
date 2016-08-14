@@ -15,7 +15,7 @@ module.exports = (robot) ->
   # startup
   robot.send envelope, 'むくり'
 
-  robot.respond /(いま|今)(| |　)何時(？|\?)/i, (msg) ->
+  robot.respond /(|いま|今)(| |　)何時(？|\?)/i, (msg) ->
     msg.send "現在の時刻は　#{moment().format('lll')}　デス"
 
   # JS eval
@@ -94,5 +94,9 @@ module.exports = (robot) ->
   robot.hear /.*/, (msg) ->
     user = msg.envelope.user.name.trim().toLowerCase()
 
-    if user == 'sideroad'
-      msg.send msg.random [ 'ナブチ様　顔でかい　デス', 'ナブチ様　顔が大きくて　改札通れない　デス', 'ナブチ様　１５ｍ級　デス' ]
+    if user == 'nabnab'
+      msg.send msg.random [
+        'ナブチ様　顔でかい　デス',
+        'ナブチ様　顔が大きくて　改札通れない　デス',
+        'ナブチ様　１５ｍ級　デス'
+      ]
