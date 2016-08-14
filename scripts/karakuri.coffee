@@ -3,6 +3,7 @@
 moment = require 'moment'
 moment.locale 'ja'
 cron = require('cron').CronJob
+envelope = room: "C0JHEPQ94"
 
 module.exports = (robot) ->
 
@@ -17,7 +18,6 @@ module.exports = (robot) ->
   new cron '0 0 15 * * *', () ->
     robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
-      envelope = room: "general"
       robot.send envelope, '３時のオヤツ　デス'
       robot.send envelope, data[0].title
       robot.send envelope, data[0].url
@@ -48,7 +48,6 @@ module.exports = (robot) ->
       'この髪型は　原宿スタイル　デス'
     ]
     message = ary[Math.floor(Math.random() * ary.length)]
-    envelope = room: "general"
     robot.send envelope, message
   , null, true, "Asia/Tokyo"
 
@@ -57,7 +56,6 @@ module.exports = (robot) ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
       if data.date == moment.utc().format()
-        envelope = room: "general"
         robot.send envelope, '本日はkoikijsの開催日　デス'
         robot.send envelope, 'みなさま　お遅れにならないよう　お願いします　デス'
   , null, true, "Asia/Tokyo"
