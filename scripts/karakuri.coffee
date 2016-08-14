@@ -16,7 +16,7 @@ module.exports = (robot) ->
   robot.send envelope, 'むくり'
 
   robot.respond /時間/i, (msg) ->
-    msg.send "現在の時刻は　#{new Date()}　デス"
+    msg.send "現在の時刻は　#{moment().format('lll')}　デス"
 
   # JS eval
   robot.hear /^js (.+)/i, (msg) ->
@@ -51,7 +51,8 @@ module.exports = (robot) ->
         robot.send envelope, 'みなさま　お遅れにならないよう　お願いします　デス'
   , null, true, "Asia/Tokyo"
 
-  robot.hear /(次|つぎ)の(| |　)(小粋|koiki|こいき)(| |　)(は)いつ(|になる|になりそう|ですか)(？|\?)/i, (msg) ->
+  robot.hear /(次|つぎ)の(| |　)(小粋|koiki|こいき)(| |　)(は)いつ(|になる|になりそう|ですか|になりそうですか|にする)(？|\?)/i, (msg) ->
+    robot.send envelope, 'ただいま確認中　デス'
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
       if data.date
