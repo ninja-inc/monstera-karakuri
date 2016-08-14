@@ -25,17 +25,17 @@ module.exports = (robot) ->
     console.log 'evaluated', evaluated
     msg.send evaluated
 
-  # # Nabuchi
-  # robot.receive = (msg) ->
-  #   user = msg.user?.name?.trim().toLowerCase()
-  #
-  #   if user == 'nabnab'
-  #     msg.send msg.random [
-  #       'ナブチ様　顔でかい　デス',
-  #       'ナブチ様　顔が大きくて　改札通れない　デス',
-  #       'ナブチ様　15m級　デス'
-  #     ]
-  #
+  # Nabuchi
+  robot.receive = (msg) ->
+    user = msg.user?.name?.trim().toLowerCase()
+
+    if user == 'nabnab'
+      msg.send msg.random [
+        'ナブチ様　顔でかい　デス',
+        'ナブチ様　顔が大きくて　改札通れない　デス',
+        'ナブチ様　15m級　デス'
+      ]
+
   # # Topics
   # new cron '0 0 15 * * *', () ->
   #   robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
