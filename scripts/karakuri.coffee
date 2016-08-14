@@ -7,7 +7,7 @@ envelope = room: "C0JHEPQ94"
 
 module.exports = (robot) ->
 
-  robot.send envelope 'むくり'
+  robot.send envelope, 'むくり'
 
   # Nabuchi
   robot.receive = (msg)->
