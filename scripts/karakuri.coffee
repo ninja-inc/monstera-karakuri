@@ -17,6 +17,7 @@ module.exports = (robot) ->
   new cron '0 0 15 * * *', () ->
     robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
+      console.log 'Topics'
       robot.send('３時のオヤツ　デス')
       robot.send(data[0].title)
       robot.send(data[0].url)
@@ -30,7 +31,7 @@ module.exports = (robot) ->
   robot.hear /こんにちは/i, (msg) ->
     msg.send "こんにちは　デス"
 
-  new cron '0 0 * * * *', () ->
+  new cron '0 0,5,10,15,20,25,30,35,40,45,50,55 * * * *', () ->
     ary = [
       '茶運び人形　からくり　と申します　デス',
       'カタカタカタカタ・・・',
@@ -46,7 +47,9 @@ module.exports = (robot) ->
       'わたくし　日本生まれ、ロンドン在住　デス',
       'この髪型は　原宿スタイル　デス'
     ]
-    robot.send ary[Math.floor(Math.random() * ary.length)]
+    message = ary[Math.floor(Math.random() * ary.length)]
+    console.log message
+    robot.send message
   , null, true, "Asia/Tokyo"
 
   # Koiki
