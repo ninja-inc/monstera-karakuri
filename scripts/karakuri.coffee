@@ -18,9 +18,9 @@ module.exports = (robot) ->
     robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
       envelope = room: "general"
-      robot.send envelope '３時のオヤツ　デス'
-      robot.send envelope data[0].title
-      robot.send envelope data[0].url
+      robot.send envelope, '３時のオヤツ　デス'
+      robot.send envelope, data[0].title
+      robot.send envelope, data[0].url
   , null, true, "Asia/Tokyo"
 
   # Greeting
@@ -49,7 +49,7 @@ module.exports = (robot) ->
     ]
     message = ary[Math.floor(Math.random() * ary.length)]
     envelope = room: "general"
-    robot.send envelope message
+    robot.send envelope, message
   , null, true, "Asia/Tokyo"
 
   # Koiki
@@ -58,8 +58,8 @@ module.exports = (robot) ->
       data = JSON.parse(body)
       if data.date == moment.utc().format()
         envelope = room: "general"
-        robot.send envelope '本日はkoikijsの開催日　デス'
-        robot.send envelope 'みなさま　お遅れにならないよう　お願いします　デス'
+        robot.send envelope, '本日はkoikijsの開催日　デス'
+        robot.send envelope, 'みなさま　お遅れにならないよう　お願いします　デス'
   , null, true, "Asia/Tokyo"
 
   robot.hear /(次|つぎ)の(| |　)(小粋|koiki|こいき)(| |　)(は)いつ(|になる|になりそう|ですか)(？|\?)/i, (msg) ->
