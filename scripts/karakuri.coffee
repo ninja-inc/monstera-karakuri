@@ -34,14 +34,14 @@ module.exports = (robot) ->
       robot.send envelope, data[0].url
   , null, true, "Asia/Tokyo"
 
-  # # Greeting
-  # robot.hear /こんばんは/i, (msg) ->
-  #   msg.send "こんばん　デス"
-  # robot.hear /おはよう/i, (msg) ->
-  #   msg.send "おはようござい　デス"
-  # robot.hear /こんにちは/i, (msg) ->
-  #   msg.send "こんにちは　デス"
-  #
+  # Greeting
+  robot.hear /こんばんは/i, (msg) ->
+    msg.send "こんばん　デス"
+  robot.hear /おはよう/i, (msg) ->
+    msg.send "おはようござい　デス"
+  robot.hear /こんにちは/i, (msg) ->
+    msg.send "こんにちは　デス"
+  
   # new cron '0 0 10 * * *', () ->
   #   ary = [
   #     '茶運び人形　からくり　と申します　デス',
