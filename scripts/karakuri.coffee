@@ -30,14 +30,14 @@ module.exports = (robot) ->
   robot.hear /こんにちは/i, (msg) ->
     msg.send "こんにちは　デス"
 
-  new cron '* * * * * *', () ->
-    robot.send robot.random [
-      '茶運び人形　からくり　と申します　デス',
-      'カタカタカタカタ・・・',
-      'お茶をお持ちいたしました　デス',
-      'ルンバは　からくり業界では　中の上くらい　デス'
-    ]
-  , null, true, "Asia/Tokyo"
+  # new cron '0 * * * * *', () ->
+  #   robot.send robot.random [
+  #     '茶運び人形　からくり　と申します　デス',
+  #     'カタカタカタカタ・・・',
+  #     'お茶をお持ちいたしました　デス',
+  #     'ルンバは　からくり業界では　中の上くらい　デス'
+  #   ]
+  # , null, true, "Asia/Tokyo"
 
   # Koiki
   new cron '0 0 9 * * *', () ->
