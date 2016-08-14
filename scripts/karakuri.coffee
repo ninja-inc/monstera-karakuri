@@ -3,7 +3,7 @@
 moment = require 'moment'
 moment.locale 'ja'
 cron = require('cron').CronJob
-envelope = room: "C0JHEPQ94"
+envelope = room: "C217B7QG0"
 
 module.exports = (robot) ->
 
@@ -15,7 +15,7 @@ module.exports = (robot) ->
   # startup
   robot.send envelope, 'むくり'
 
-  robot.respond /^time$/i, (msg) ->
+  robot.respond /^時間$/i, (msg) ->
     msg.send "Server time is: #{new Date()}"
 
   # Nabuchi
@@ -23,7 +23,11 @@ module.exports = (robot) ->
     user = msg.user?.name?.trim().toLowerCase()
 
     if user == 'nabnab'
-      msg.send "ナブチ様　顔でかい　デス"
+      msg.send msg.random [
+        'ナブチ様　顔でかい　デス',
+        'ナブチ様　顔が大きくて　改札通れない　デス',
+        'ナブチ様　15m級　デス'
+      ]
 
   # Topics
   new cron '0 0 15 * * *', () ->
@@ -61,28 +65,28 @@ module.exports = (robot) ->
     message = ary[Math.floor(Math.random() * ary.length)]
     robot.send envelope, message
   , null, true, "Asia/Tokyo"
-  
-  # # Koiki
-  # new cron '0 0 9 * * *', () ->
-  #   robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
-  #     data = JSON.parse(body)
-  #     if data.date == moment.utc().format()
-  #       robot.send envelope, '本日はkoikijsの開催日　デス'
-  #       robot.send envelope, 'みなさま　お遅れにならないよう　お願いします　デス'
-  # , null, true, "Asia/Tokyo"
-  #
-  # robot.hear /(次|つぎ)の(| |　)(小粋|koiki|こいき)(| |　)(は)いつ(|になる|になりそう|ですか)(？|\?)/i, (msg) ->
-  #   robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
-  #     data = JSON.parse(body)
-  #     if data.date
-  #       msg.send 'つぎは　' + moment(data.date).format('LL') + 'に開催できそう　デス'
-  #     else
-  #       msg.send '開催可能な日が　見つけられない　デス'
-  #       msg.send 'https://monstera.herokuapp.com/events/koikijs'
-  #       msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
-  #
+
+  # Koiki
+  new cron '0 0 9 * * *', () ->
+    robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
+      data = JSON.parse(body)
+      if data.date == moment.utc().format()
+        robot.send envelope, '本日はkoikijsの開催日　デス'
+        robot.send envelope, 'みなさま　お遅れにならないよう　お願いします　デス'
+  , null, true, "Asia/Tokyo"
+
+  robot.hear /(次|つぎ)の(| |　)(小粋|koiki|こいき)(| |　)(は)いつ(|になる|になりそう|ですか)(？|\?)/i, (msg) ->
+    robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
+      data = JSON.parse(body)
+      if data.date
+        msg.send 'つぎは　' + moment(data.date).format('LL') + 'に開催できそう　デス'
+      else
+        msg.send '開催可能な日が　見つけられない　デス'
+        msg.send 'https://monstera.herokuapp.com/events/koikijs'
+        msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
+
   # # JS eval
-  # robot.hear /^js (.+)/, (msg) ->
+  # robot.hear /^js (.+)/i, (msg) ->
   #   console.log 'matched', msg.match[1]
   #   evaluated = String( eval msg.match[1] )
   #   console.log 'evaluated', evaluated
