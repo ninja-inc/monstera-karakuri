@@ -94,5 +94,5 @@ module.exports = (robot) ->
   robot.hear /.*/, (msg) ->
     user = msg.envelope.user.name.trim().toLowerCase()
 
-    if user == 'nabnab'
+    if user == 'sideroad'
       msg.send msg.random [ 'ナブチ様　顔でかい　デス', 'ナブチ様　顔が大きくて　改札通れない　デス', 'ナブチ様　１５ｍ級　デス' ]
