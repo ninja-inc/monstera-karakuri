@@ -15,7 +15,7 @@ module.exports = (robot) ->
   # startup
   robot.send envelope, 'むくり'
 
-  robot.respond /^時間$/i, (msg) ->
+  robot.respond /^time$/i, (msg) ->
     msg.send "Server time is: #{new Date()}"
 
   # # Nabuchi
