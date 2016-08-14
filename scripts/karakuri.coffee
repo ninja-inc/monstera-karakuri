@@ -73,7 +73,7 @@ module.exports = (robot) ->
         msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
 
   # JS eval
-  robot.hear /^js (.+)$/, (msg) ->
+  robot.hear /^js (.+)/, (msg) ->
     console.log msg.match[1]
     evaluated = eval msg.match[1]
     console.log evaluated
