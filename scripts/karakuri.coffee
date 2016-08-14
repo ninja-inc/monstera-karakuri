@@ -18,12 +18,12 @@ module.exports = (robot) ->
   robot.respond /^time$/i, (msg) ->
     msg.send "Server time is: #{new Date()}"
 
-  # # Nabuchi
-  # robot.receive = (msg) ->
-  #   user = msg.user?.name?.trim().toLowerCase()
-  #
-  #   if user == 'nabnab'
-  #     msg.send "ナブチ様　顔でかい　デス"
+  # Nabuchi
+  robot.receive = (msg) ->
+    user = msg.user?.name?.trim().toLowerCase()
+
+    if user == 'nabnab'
+      msg.send "ナブチ様　顔でかい　デス"
   #
   # # Topics
   # new cron '0 0 15 * * *', () ->
@@ -81,9 +81,9 @@ module.exports = (robot) ->
   #       msg.send 'https://monstera.herokuapp.com/events/koikijs'
   #       msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
   #
-  # # JS eval
-  # robot.hear /^js (.+)/, (msg) ->
-  #   console.log 'matched', msg.match[1]
-  #   evaluated = String( eval msg.match[1] )
-  #   console.log 'evaluated', evaluated
-  #   msg.send evaluated
+  # JS eval
+  robot.hear /^js (.+)/, (msg) ->
+    console.log 'matched', msg.match[1]
+    evaluated = String( eval msg.match[1] )
+    console.log 'evaluated', evaluated
+    msg.send evaluated
