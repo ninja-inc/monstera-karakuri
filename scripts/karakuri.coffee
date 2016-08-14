@@ -11,7 +11,7 @@ module.exports = (robot) ->
     user = msg.user?.name?.trim().toLowerCase()
 
     if user == 'nabnab'
-      msg.send "ナブチ様　顔でかいデス"
+      msg.send "ナブチ様　顔でかい　デス"
 
   # Topics
   new cron '0 0 15 * * *', () ->
@@ -30,14 +30,21 @@ module.exports = (robot) ->
   robot.hear /こんにちは/i, (msg) ->
     msg.send "こんにちは　デス"
 
-  # new cron '0 * * * * *', () ->
-  #   robot.send robot.random [
-  #     '茶運び人形　からくり　と申します　デス',
-  #     'カタカタカタカタ・・・',
-  #     'お茶をお持ちいたしました　デス',
-  #     'ルンバは　からくり業界では　中の上くらい　デス'
-  #   ]
-  # , null, true, "Asia/Tokyo"
+  new cron '0 */6 * * * *', () ->
+    ary = [
+      '茶運び人形　からくり　と申します　デス',
+      'カタカタカタカタ・・・',
+      'お茶をお持ちいたしました　デス',
+      'ルンバは　からくり業界では　まだまだ　浅いな　と思う　デス',
+      'からくりは　４スペースでもタブでもなく　２スペース派　デス',
+      'Emacs に　未来は無い　デス',
+      'ロボコンは　正直　踏み台としか　思ってなかった　デス',
+      'ガガガ・・・　歯車に　スルメが　引っかかってるみたい　デス',
+      '「どこ見ているか分からない」　とよく言われる　デス',
+      'この髪型は　原宿スタイル　デス'
+    ];
+    robot.send ary[Math.floor(Math.random() * ary.length)]
+  , null, true, "Asia/Tokyo"
 
   # Koiki
   new cron '0 0 9 * * *', () ->
@@ -45,7 +52,7 @@ module.exports = (robot) ->
       data = JSON.parse(body)
       if data.date == moment.utc().format()
         robot.send('本日はkoikijsの開催日　デス')
-        robot.send('みなさま　お遅れにならないよう　よろしく　デス')
+        robot.send('みなさま　お遅れにならないよう　お願いします　デス')
   , null, true, "Asia/Tokyo"
 
   robot.hear /(次|つぎ)の(| |　)(小粋|koiki|こいき)(| |　)(は)いつ(|になる|になりそう|ですか)(？|\?)/i, (msg) ->
