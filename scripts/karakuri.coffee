@@ -24,15 +24,15 @@ module.exports = (robot) ->
 
     if user == 'nabnab'
       msg.send "ナブチ様　顔でかい　デス"
-  #
-  # # Topics
-  # new cron '0 0 15 * * *', () ->
-  #   robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
-  #     data = JSON.parse(body)
-  #     robot.send envelope, '３時のオヤツ　デス'
-  #     robot.send envelope, data[0].title
-  #     robot.send envelope, data[0].url
-  # , null, true, "Asia/Tokyo"
+  
+  # Topics
+  new cron '0 0 15 * * *', () ->
+    robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
+      data = JSON.parse(body)
+      robot.send envelope, '３時のオヤツ　デス'
+      robot.send envelope, data[0].title
+      robot.send envelope, data[0].url
+  , null, true, "Asia/Tokyo"
 
   # Greeting
   robot.hear /こんばんは/i, (msg) ->
@@ -81,9 +81,9 @@ module.exports = (robot) ->
   #       msg.send 'https://monstera.herokuapp.com/events/koikijs'
   #       msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
   #
-  # JS eval
-  robot.hear /^js (.+)/, (msg) ->
-    console.log 'matched', msg.match[1]
-    evaluated = String( eval msg.match[1] )
-    console.log 'evaluated', evaluated
-    msg.send evaluated
+  # # JS eval
+  # robot.hear /^js (.+)/, (msg) ->
+  #   console.log 'matched', msg.match[1]
+  #   evaluated = String( eval msg.match[1] )
+  #   console.log 'evaluated', evaluated
+  #   msg.send evaluated
