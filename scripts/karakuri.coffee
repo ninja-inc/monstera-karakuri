@@ -7,6 +7,9 @@ envelope = room: "C0JHEPQ94"
 
 module.exports = (robot) ->
 
+  # startup
+  robot.send envelope, 'むくり'
+
   # Nabuchi
   robot.receive = (msg)->
     user = msg.user?.name?.trim().toLowerCase()
