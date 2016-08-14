@@ -36,11 +36,11 @@ module.exports = (robot) ->
 
   # Greeting
   robot.hear /こんばんは/i, (msg) ->
-    msg.send "こんばん　デス"
+    msg.send "今晩は、過ごしやすうございます　デス"
   robot.hear /おはよう/i, (msg) ->
-    msg.send "おはようござい　デス"
+    msg.send "お早くから、ご苦労様でございます　デス"
   robot.hear /こんにちは/i, (msg) ->
-    msg.send "こんにちは　デス"
+    msg.send "今日は、良いお日和　デス"
 
   # Koiki
   new cron '0 0 9 * * *', () ->
@@ -51,7 +51,7 @@ module.exports = (robot) ->
         robot.send envelope, 'みなさま　お遅れにならないよう　お願いします　デス'
   , null, true, "Asia/Tokyo"
 
-  robot.hear /(次|つぎ)の(| |　)(小粋|koiki|こいき)(| |　)(は)いつ(|になる|になりそう|ですか|になりそうですか|にする)(？|\?)/i, (msg) ->
+  robot.hear /(次|つぎ)の(| |　)(小粋|koiki|こいき)(| |　)(は)いつ(|ごろ|頃)(|になる|になりそう|ですか|になりそうですか|にする)(？|\?)/i, (msg) ->
     robot.send envelope, 'ただいま確認中　デス'
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
@@ -62,27 +62,27 @@ module.exports = (robot) ->
         msg.send 'https://monstera.herokuapp.com/events/koikijs'
         msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
 
-  # new cron '0 0 10 * * *', () ->
-  #   ary = [
-  #     '茶運び人形　からくり　と申します　デス',
-  #     'カタカタカタカタ・・・',
-  #     'お茶をお持ちいたしました　デス',
-  #     '正直　ルンバは　からくり業界では　まだまだ　浅いな　と思う　デス',
-  #     'わたくし　４スペースでもタブでもなく　２スペース派　デス',
-  #     'Emacs に　未来は無い　デス',
-  #     'ロボコンは　正直　踏み台としか　思ってない　デス',
-  #     'ガガガ・・・　歯車に　スルメが　引っかかってるみたい　デス',
-  #     '「どこ見ているか分からない」　とよく言われる　デス',
-  #     '文字書き人形　は　神的な存在　デス',
-  #     'わたくし　段差に弱い系男子　デス',
-  #     'わたくし　日本生まれ、ロンドン在住　デス',
-  #     'この髪型は　原宿スタイル　デス'
-  #   ]
-  #   message = ary[Math.floor(Math.random() * ary.length)]
-  #   robot.send envelope, message
-  # , null, true, "Asia/Tokyo"
-  #
-  #
+  new cron '0 0 10 * * *', () ->
+    ary = [
+      '茶運び人形　からくり　と申します　デス',
+      'カタカタカタカタ・・・',
+      'お茶をお持ちいたしました　デス',
+      '正直　ルンバは　からくり業界では　まだまだ　浅いな　と思う　デス',
+      'わたくし　４スペースでもタブでもなく　２スペース派　デス',
+      'Emacs に　未来は無い　デス',
+      'ロボコンは　正直　踏み台としか　思ってない　デス',
+      'ガガガ・・・　歯車に　スルメが　引っかかってるみたい　デス',
+      '「どこ見ているか分からない」　とよく言われる　デス',
+      '文字書き人形　は　神的な存在　デス',
+      'わたくし　段差に弱い系男子　デス',
+      'わたくし　日本生まれ、ロンドン在住　デス',
+      'この髪型は　原宿スタイル　デス'
+    ]
+    message = ary[Math.floor(Math.random() * ary.length)]
+    robot.send envelope, message
+  , null, true, "Asia/Tokyo"
+
+  
   # # Nabuchi
   # robot.receive = (msg) ->
   #   user = msg.user?.name?.trim().toLowerCase()
