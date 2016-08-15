@@ -93,7 +93,7 @@ module.exports = (robot) ->
     msg.send "今日は、良いお日和　デス"
 
   # Koiki
-  new cron '0 0 9 * * *', () ->
+  new cron '0 30 9 * * *', () ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
       if data.date == moment.utc().startOf('date').format()
