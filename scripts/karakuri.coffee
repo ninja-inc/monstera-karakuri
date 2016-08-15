@@ -4,6 +4,7 @@ moment = require 'moment'
 moment.locale 'ja'
 cron = require('cron').CronJob
 envelope = room: "C0JHEPQ94" # general
+taka66 = room: "C0JHEPQ94", user: "U0JH92D60" # taka66
 # envelope = room: "C217B7QG0" # test
 
 module.exports = (robot) ->
@@ -95,9 +96,19 @@ module.exports = (robot) ->
   new cron '0 0 9 * * *', () ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
-      if data.date == moment.utc().format()
-        robot.send envelope, '本日はkoikijsの開催日　デス'
+      if data.date == moment.utc().startOf('date').format()
+        robot.send envelope, '本日は　koiki　の開催日　デス'
         robot.send envelope, 'みなさま　お遅れにならないよう　お願いします　デス'
+        robot.send envelope, 'ご飯　隊長: ninja-inc'
+        robot.send envelope, '場所取り　隊長: sideroad'
+        robot.send envelope, '議事録　隊長: nabnab'
+        robot.send envelope, 'デザイン　隊長: taka66'
+      if data.date == moment.utc().startOf('date').add(1, 'days').format()
+        robot.send envelope, '明日は　koiki　の開催日　デス'
+        robot.send envelope, 'みなさま　お忘れの無いよう　お願いします　デス'
+      if data.date == moment.utc().startOf('date').add(7, 'days').format()
+        robot.send envelope, "次回　koiki　の開催予定日は　#{moment(data.date).format('LL (ddd)')}　デス"
+        robot.send taka66,   "場所の予約のほど　よろしくお願いします　デス"
   , null, true, "Asia/Tokyo"
 
   robot.hear /(次|つぎ)の(| |　)(小粋|koiki|こいき)(| |　)(は)いつ(|ごろ|頃)(|になる|になりそう|ですか|になりそうですか|にする)(？|\?)/i, (msg) ->
@@ -105,7 +116,7 @@ module.exports = (robot) ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
       if data.date
-        msg.send "つぎは　#{moment(data.date).format('LL (ddd)')}　に開催できそう　デス"
+        msg.send "つぎの開催予定日は　#{moment(data.date).format('LL (ddd)')}　デス"
       else
         msg.send '開催可能な日が　見つけられない　デス'
         msg.send 'https://monstera.herokuapp.com/events/koikijs'
