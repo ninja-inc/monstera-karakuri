@@ -35,6 +35,46 @@ module.exports = (robot) ->
       robot.send envelope, data[0].url
   , null, true, "Asia/Tokyo"
 
+  new cron '0 0 15 * * 1', () ->
+    robot.http('http://qiita.com/api/v2/tags/redux/items?page=1&per_page=1').get() (err, res, body) ->
+      data = JSON.parse(body)
+      robot.send envelope, '３時の Redux オヤツ　デス'
+      robot.send envelope, data[0].title
+      robot.send envelope, data[0].url
+  , null, true, "Asia/Tokyo"
+
+  new cron '0 0 15 * * 2', () ->
+    robot.http('http://qiita.com/api/v2/tags/microservices/items?page=1&per_page=1').get() (err, res, body) ->
+      data = JSON.parse(body)
+      robot.send envelope, '３時の Micro Services オヤツ　デス'
+      robot.send envelope, data[0].title
+      robot.send envelope, data[0].url
+  , null, true, "Asia/Tokyo"
+
+  new cron '0 0 15 * * 3', () ->
+    robot.http('http://qiita.com/api/v2/tags/ux/items?page=1&per_page=1').get() (err, res, body) ->
+      data = JSON.parse(body)
+      robot.send envelope, '３時の UX オヤツ　デス'
+      robot.send envelope, data[0].title
+      robot.send envelope, data[0].url
+  , null, true, "Asia/Tokyo"
+
+  new cron '0 0 15 * * 4', () ->
+    robot.http('http://qiita.com/api/v2/tags/javascript/items?page=1&per_page=1').get() (err, res, body) ->
+      data = JSON.parse(body)
+      robot.send envelope, '３時の JavaScript オヤツ　デス'
+      robot.send envelope, data[0].title
+      robot.send envelope, data[0].url
+  , null, true, "Asia/Tokyo"
+
+  new cron '0 0 15 * * 5', () ->
+    robot.http('http://qiita.com/api/v2/tags/spa/items?page=1&per_page=1').get() (err, res, body) ->
+      data = JSON.parse(body)
+      robot.send envelope, '３時の SPA オヤツ　デス'
+      robot.send envelope, data[0].title
+      robot.send envelope, data[0].url
+  , null, true, "Asia/Tokyo"
+
   new cron '0 0 15 * * 6', () ->
     robot.http('http://qiita.com/api/v2/tags/spring/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
