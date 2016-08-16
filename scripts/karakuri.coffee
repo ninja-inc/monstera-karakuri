@@ -16,6 +16,24 @@ module.exports = (robot) ->
 
   # startup
   robot.send envelope, 'むくり'
+  ary = [
+    '茶運び人形　からくり　と申します　デス',
+    'カタカタカタ・・・',
+    'カタカタカタ・・・　お茶をお持ちいたしました　デス',
+    '正直　ルンバは　からくり業界では　まだまだ　浅いな　と思う　デス',
+    'わたくし　４スペースでもタブでもなく　２スペース派　デス',
+    'Emacs に　未来は無い　デス',
+    'ロボコンは　正直　踏み台としか　思ってない　デス',
+    'ガガガ・・・　歯車に　スルメが　引っかかってるみたい　デス',
+    '「どこ見ているか分からない」　とよく言われる　デス',
+    '文字書き人形　は　神的な存在　デス',
+    'わたくし　段差に弱い系男子　デス',
+    'わたくし　こう見えて　日本生まれ、ロンドン在住　デス',
+    'この髪型は　原宿スタイル　デス',
+    'もしも　しらすに生まれ変わったら　江ノ島にだけは近づきません　デス'
+  ]
+  message = ary[Math.floor(Math.random() * ary.length)]
+  robot.send envelope, message
 
   robot.hear /(|いま|今)(| |　)何時(？|\?)/i, (msg) ->
     msg.send "現在の時刻は　#{moment().format('lll')}　デス"
@@ -31,57 +49,43 @@ module.exports = (robot) ->
   new cron '0 0 15 * * 0', () ->
     robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
-      robot.send envelope, '３時の React オヤツ　デス'
-      robot.send envelope, data[0].title
-      robot.send envelope, data[0].url
+      robot.send envelope, "３時の React オヤツ　デス #{data[0].url}"
   , null, true, "Asia/Tokyo"
 
   new cron '0 0 15 * * 1', () ->
     robot.http('http://qiita.com/api/v2/tags/redux/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
-      robot.send envelope, '３時の Redux オヤツ　デス'
-      robot.send envelope, data[0].title
-      robot.send envelope, data[0].url
+      robot.send envelope, "３時の Redux オヤツ　デス #{data[0].url}"
   , null, true, "Asia/Tokyo"
 
   new cron '0 0 15 * * 2', () ->
     robot.http('http://qiita.com/api/v2/tags/microservices/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
-      robot.send envelope, '３時の Micro Services オヤツ　デス'
-      robot.send envelope, data[0].title
-      robot.send envelope, data[0].url
+      robot.send envelope, "３時の Micro Services オヤツ　デス #{data[0].url}"
   , null, true, "Asia/Tokyo"
 
   new cron '0 0 15 * * 3', () ->
     robot.http('http://qiita.com/api/v2/tags/ux/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
-      robot.send envelope, '３時の UX オヤツ　デス'
-      robot.send envelope, data[0].title
-      robot.send envelope, data[0].url
+      robot.send envelope, "３時の UX オヤツ　デス #{data[0].url}"
   , null, true, "Asia/Tokyo"
 
   new cron '0 0 15 * * 4', () ->
     robot.http('http://qiita.com/api/v2/tags/javascript/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
-      robot.send envelope, '３時の JavaScript オヤツ　デス'
-      robot.send envelope, data[0].title
-      robot.send envelope, data[0].url
+      robot.send envelope, "３時の JavaScript オヤツ　デス #{data[0].url}"
   , null, true, "Asia/Tokyo"
 
   new cron '0 0 15 * * 5', () ->
     robot.http('http://qiita.com/api/v2/tags/spa/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
-      robot.send envelope, '３時の SPA オヤツ　デス'
-      robot.send envelope, data[0].title
-      robot.send envelope, data[0].url
+      robot.send envelope, "３時の SPA オヤツ　デス #{data[0].url}"
   , null, true, "Asia/Tokyo"
 
   new cron '0 0 15 * * 6', () ->
     robot.http('http://qiita.com/api/v2/tags/spring/items?page=1&per_page=1').get() (err, res, body) ->
       data = JSON.parse(body)
-      robot.send envelope, '３時の Spring オヤツ　デス'
-      robot.send envelope, data[0].title
-      robot.send envelope, data[0].url
+      robot.send envelope, "３時の Spring オヤツ　デス #{data[0].url}"
   , null, true, "Asia/Tokyo"
 
   # Greeting
@@ -121,26 +125,6 @@ module.exports = (robot) ->
         msg.send '開催可能な日が　見つけられない　デス'
         msg.send 'https://monstera.herokuapp.com/events/koikijs'
         msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
-
-  new cron '0 0 10 * * *', () ->
-    ary = [
-      '茶運び人形　からくり　と申します　デス',
-      'カタカタカタカタ・・・',
-      'お茶をお持ちいたしました　デス',
-      '正直　ルンバは　からくり業界では　まだまだ　浅いな　と思う　デス',
-      'わたくし　４スペースでもタブでもなく　２スペース派　デス',
-      'Emacs に　未来は無い　デス',
-      'ロボコンは　正直　踏み台としか　思ってない　デス',
-      'ガガガ・・・　歯車に　スルメが　引っかかってるみたい　デス',
-      '「どこ見ているか分からない」　とよく言われる　デス',
-      '文字書き人形　は　神的な存在　デス',
-      'わたくし　段差に弱い系男子　デス',
-      'わたくし　日本生まれ、ロンドン在住　デス',
-      'この髪型は　原宿スタイル　デス'
-    ]
-    message = ary[Math.floor(Math.random() * ary.length)]
-    robot.send envelope, message
-  , null, true, "Asia/Tokyo"
 
   # Nabuchi
   robot.hear /.*/, (msg) ->
