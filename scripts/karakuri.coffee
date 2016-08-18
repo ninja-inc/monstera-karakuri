@@ -16,24 +16,25 @@ module.exports = (robot) ->
 
   # startup
   robot.send envelope, 'むくり'
-  ary = [
-    '茶運び人形　からくり　と申します　デス',
-    'カタカタカタ・・・',
-    'カタカタカタ・・・　お茶をお持ちいたしました　デス',
-    '正直　ルンバは　からくり業界では　まだまだ　浅いな　と思う　デス',
-    'わたくし　４スペースでもタブでもなく　２スペース派　デス',
-    'Emacs に　未来は無い　デス',
-    'ロボコンは　正直　踏み台としか　思ってない　デス',
-    'ガガガ・・・　歯車に　スルメが　引っかかってるみたい　デス',
-    '「どこ見ているか分からない」　とよく言われる　デス',
-    '文字書き人形　は　神的な存在　デス',
-    'わたくし　段差に弱い系男子　デス',
-    'わたくし　こう見えて　日本生まれ、ロンドン在住　デス',
-    'この髪型は　原宿スタイル　デス',
-    'もしも　しらすに生まれ変わったら　江ノ島にだけは近づきません　デス'
-  ]
-  message = ary[Math.floor(Math.random() * ary.length)]
+  msgs = JSON.parse(robot.brain.get('msgs')||'[]')
+  message = msgs[Math.floor(Math.random() * msgs.length)]
   robot.send envelope, message
+
+  robot.hear /^karakuri put (.*)/, (msg) ->
+    msgs = JSON.parse(robot.brain.get('msgs')||'[]')
+    msgs.push msg.match[1]
+    robot.brain.set('msgs', JSON.stringify msgs);
+    msg.send msg.match[1] + ' が追加されました　デス'
+
+  robot.hear /^karakuri delete (\d+)/, (msg) ->
+    msgs = JSON.parse(robot.brain.get('msgs')||'[]')
+    deleted msgs.splice msg.match[1], 1
+    robot.brain.set('msgs', JSON.stringify msgs);
+    msg.send deleted[0] + ' が削除されました　デス'
+
+  robot.hear /^karakuri all$/, (msg) ->
+    msgs = JSON.parse(robot.brain.get('msgs')||'[]')
+    msg.send msgs.join '\n'
 
   robot.hear /(|いま|今)(| |　)何時(？|\?)/i, (msg) ->
     msg.send "現在の時刻は　#{moment().format('lll')}　デス"
@@ -65,15 +66,22 @@ module.exports = (robot) ->
     msg.send "今日は、良いお日和　デス"
 
   # Wake up servers
-  new cron '0 28 9 * * *', () ->
+  new cron '0 27 9 * * *', () ->
     robot.http('https://monstera.herokuapp.com').get() (err, res, body) ->
-      robot.http('https://chaus.herokuapp.com').get() (err, res, body) ->
+  , null, true, "Asia/Tokyo"
+
+  new cron '0 28 9 * * *', () ->
+    robot.http('https://chaus.herokuapp.com').get() (err, res, body) ->
   , null, true, "Asia/Tokyo"
 
   # Koiki
   new cron '0 30 9 * * *', () ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
+      if data.date == null
+        msg.send '開催可能な日が　見つけられない　デス'
+        msg.send 'https://monstera.herokuapp.com/events/koikijs'
+        msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
       if data.date == moment.utc().startOf('date').format()
         robot.send envelope, '本日は　koiki　の開催日　デス'
         robot.send envelope, 'みなさま　お遅れにならないよう　お願いします　デス'
@@ -105,6 +113,11 @@ module.exports = (robot) ->
     nabs = JSON.parse(robot.brain.get('nabs')||'[]')
     nabs.push msg.match[1]
     robot.brain.set('nabs', JSON.stringify nabs);
+    msg.send msg.match[1] + ' が追加されました　デス'
+
+  robot.hear /^nab all$/, (msg) ->
+    nabs = JSON.parse(robot.brain.get('nabs')||'[]')
+    msg.send nabs.join '\n'
 
   robot.hear /.*/, (msg) ->
     user = msg.envelope.user.name.trim().toLowerCase()
