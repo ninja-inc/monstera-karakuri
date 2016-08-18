@@ -14,12 +14,6 @@ module.exports = (robot) ->
     robot.logger.error err
     robot.logger.error res
 
-  # startup
-  robot.send envelope, 'むくり'
-  msgs = JSON.parse(robot.brain.get('msgs')||'[]')
-  message = msgs[Math.floor(Math.random() * msgs.length)] || ''
-  robot.send envelope, message
-
   robot.hear /^karakuri put (.*)/, (msg) ->
     msgs = JSON.parse(robot.brain.get('msgs')||'[]')
     msgs.push msg.match[1]
@@ -124,3 +118,11 @@ module.exports = (robot) ->
 
     if user == 'nabnab'
       msg.send msg.random JSON.parse(robot.brain.get('nabs')||'[]')
+
+  # startup
+  robot.send envelope, 'むくり'
+  setTimeout () ->
+    msgs = JSON.parse(robot.brain.get('msgs')||'[]')
+    message = msgs[Math.floor(Math.random() * msgs.length)] || ''
+    robot.send envelope, message
+  , 5000
