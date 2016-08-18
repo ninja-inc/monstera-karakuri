@@ -102,7 +102,7 @@ module.exports = (robot) ->
 
   # Nabuchi
   robot.hear /^nab put (.*)/, (msg) ->
-    nabs = JSON.parse(robot.brain.get('nab')||'[]')
+    nabs = JSON.parse(robot.brain.get('nabs')||'[]')
     nabs.push msg.match[1]
     robot.brain.set('nabs', JSON.stringify nabs);
 
