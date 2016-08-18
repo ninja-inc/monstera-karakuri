@@ -23,13 +23,13 @@ module.exports = (robot) ->
   robot.hear /^karakuri put (.*)/, (msg) ->
     msgs = JSON.parse(robot.brain.get('msgs')||'[]')
     msgs.push msg.match[1]
-    robot.brain.set('msgs', JSON.stringify msgs);
+    robot.brain.set('msgs', JSON.stringify msgs)
     msg.send msg.match[1] + ' が追加されました　デス'
 
   robot.hear /^karakuri delete (\d+)/, (msg) ->
     msgs = JSON.parse(robot.brain.get('msgs')||'[]')
     deleted msgs.splice msg.match[1], 1
-    robot.brain.set('msgs', JSON.stringify msgs);
+    robot.brain.set('msgs', JSON.stringify msgs)
     msg.send deleted[0] + ' が削除されました　デス'
 
   robot.hear /^karakuri all$/, (msg) ->
@@ -112,7 +112,7 @@ module.exports = (robot) ->
   robot.hear /^nab put (.*)/, (msg) ->
     nabs = JSON.parse(robot.brain.get('nabs')||'[]')
     nabs.push msg.match[1]
-    robot.brain.set('nabs', JSON.stringify nabs);
+    robot.brain.set('nabs', JSON.stringify nabs)
     msg.send msg.match[1] + ' が追加されました　デス'
 
   robot.hear /^nab all$/, (msg) ->
