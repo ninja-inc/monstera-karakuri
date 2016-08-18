@@ -65,6 +65,10 @@ module.exports = (robot) ->
     msg.send "今日は、良いお日和　デス"
 
   # Koiki
+  new cron '0 28 9 * * *', () ->
+    robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
+  , null, true, "Asia/Tokyo"
+
   new cron '0 30 9 * * *', () ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
