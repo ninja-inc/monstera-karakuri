@@ -64,11 +64,13 @@ module.exports = (robot) ->
   robot.hear /こんにちは/i, (msg) ->
     msg.send "今日は、良いお日和　デス"
 
-  # Koiki
+  # Wake up servers
   new cron '0 28 9 * * *', () ->
-    robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
+    robot.http('https://monstera.herokuapp.com').get() (err, res, body) ->
+      robot.http('https://chaus.herokuapp.com').get() (err, res, body) ->
   , null, true, "Asia/Tokyo"
 
+  # Koiki
   new cron '0 30 9 * * *', () ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
@@ -99,12 +101,13 @@ module.exports = (robot) ->
         msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
 
   # Nabuchi
+  robot.hear /^nab put (.*)/, (msg) ->
+    nabs = JSON.parse(robot.brain.get('nab')||'[]')
+    nabs.push msg.match[1]
+    robot.brain.set('nabs', JSON.stringify nabs);
+
   robot.hear /.*/, (msg) ->
     user = msg.envelope.user.name.trim().toLowerCase()
 
     if user == 'nabnab'
-      msg.send msg.random [
-        'ナブチ様　顔でかい　デス',
-        'ナブチ様　顔が大きくて　改札通れない　デス',
-        'ナブチ様　１５ｍ級　デス'
-      ]
+      msg.send msg.random JSON.parse(robot.brain.get('nabs')||'[]')
