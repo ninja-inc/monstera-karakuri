@@ -46,46 +46,14 @@ module.exports = (robot) ->
     msg.send evaluated
 
   # Topics
-  new cron '0 0 15 * * 0', () ->
-    robot.http('http://qiita.com/api/v2/tags/react/items?page=1&per_page=1').get() (err, res, body) ->
-      data = JSON.parse(body)
-      robot.send envelope, "３時の React オヤツ　デス #{data[0].url}"
-  , null, true, "Asia/Tokyo"
-
-  new cron '0 0 15 * * 1', () ->
-    robot.http('http://qiita.com/api/v2/tags/redux/items?page=1&per_page=1').get() (err, res, body) ->
-      data = JSON.parse(body)
-      robot.send envelope, "３時の Redux オヤツ　デス #{data[0].url}"
-  , null, true, "Asia/Tokyo"
-
-  new cron '0 0 15 * * 2', () ->
-    robot.http('http://qiita.com/api/v2/tags/microservices/items?page=1&per_page=1').get() (err, res, body) ->
-      data = JSON.parse(body)
-      robot.send envelope, "３時の Micro Services オヤツ　デス #{data[0].url}"
-  , null, true, "Asia/Tokyo"
-
-  new cron '0 0 15 * * 3', () ->
-    robot.http('http://qiita.com/api/v2/tags/ux/items?page=1&per_page=1').get() (err, res, body) ->
-      data = JSON.parse(body)
-      robot.send envelope, "３時の UX オヤツ　デス #{data[0].url}"
-  , null, true, "Asia/Tokyo"
-
-  new cron '0 0 15 * * 4', () ->
-    robot.http('http://qiita.com/api/v2/tags/javascript/items?page=1&per_page=1').get() (err, res, body) ->
-      data = JSON.parse(body)
-      robot.send envelope, "３時の JavaScript オヤツ　デス #{data[0].url}"
-  , null, true, "Asia/Tokyo"
-
-  new cron '0 0 15 * * 5', () ->
-    robot.http('http://qiita.com/api/v2/tags/spa/items?page=1&per_page=1').get() (err, res, body) ->
-      data = JSON.parse(body)
-      robot.send envelope, "３時の SPA オヤツ　デス #{data[0].url}"
-  , null, true, "Asia/Tokyo"
-
-  new cron '0 0 15 * * 6', () ->
-    robot.http('http://qiita.com/api/v2/tags/spring/items?page=1&per_page=1').get() (err, res, body) ->
-      data = JSON.parse(body)
-      robot.send envelope, "３時の Spring オヤツ　デス #{data[0].url}"
+  new cron '0 0 15 * * *', () ->
+    robot.http("https://chaus.herokuapp.com/apis/karakuri/tags").get() (err, res, body) ->
+      tags = JSON.parse(body).items.map (item) ->
+        return item.name
+      tag = tags[Math.floor(Math.random() * tags.length)]
+      robot.http("http://qiita.com/api/v2/tags/#{tag}/items?page=1&per_page=1").get() (err, res, body) ->
+        data = JSON.parse(body)
+        robot.send envelope, "３時の #{tag} オヤツ　デス #{data[0].url}"
   , null, true, "Asia/Tokyo"
 
   # Greeting
