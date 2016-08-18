@@ -109,6 +109,12 @@ module.exports = (robot) ->
     robot.brain.set('nabs', JSON.stringify nabs)
     msg.send msg.match[1] + ' が追加されました　デス'
 
+  robot.hear /^nab delete (\d+)/, (msg) ->
+    nabs = JSON.parse(robot.brain.get('nabs')||'[]')
+    deleted = nabs.splice msg.match[1], 1
+    robot.brain.set('nabs', JSON.stringify nabs)
+    msg.send deleted[0] + ' が削除されました　デス'
+
   robot.hear /^nab all$/, (msg) ->
     nabs = JSON.parse(robot.brain.get('nabs')||'[]')
     msg.send nabs.join '\n'
