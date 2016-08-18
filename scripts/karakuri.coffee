@@ -17,7 +17,7 @@ module.exports = (robot) ->
   # startup
   robot.send envelope, 'むくり'
   msgs = JSON.parse(robot.brain.get('msgs')||'[]')
-  message = msgs[Math.floor(Math.random() * msgs.length)]
+  message = msgs[Math.floor(Math.random() * msgs.length)] || ''
   robot.send envelope, message
 
   robot.hear /^karakuri put (.*)/, (msg) ->
