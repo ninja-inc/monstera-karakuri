@@ -28,7 +28,7 @@ module.exports = (robot) ->
 
   robot.hear /^karakuri delete (\d+)/, (msg) ->
     msgs = JSON.parse(robot.brain.get('msgs')||'[]')
-    deleted msgs.splice msg.match[1], 1
+    deleted = msgs.splice msg.match[1], 1
     robot.brain.set('msgs', JSON.stringify msgs)
     msg.send deleted[0] + ' が削除されました　デス'
 
