@@ -125,6 +125,14 @@ module.exports = (robot) ->
     if user == 'nabnab'
       msg.send msg.random JSON.parse(robot.brain.get('nabs')||'[]')
 
+  robot.hear /ごはん|はらへ/, (msg) ->
+    toYYYYMMDD = (date) ->
+      return date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2)
+    cafeteriaApi = 'https://rakuten-towerman.azurewebsites.net/towerman-restapi/rest/cafeteria/menulist'
+    robot.http(cafeteriaApi).query(menuDate: toYYYYMMDD(new Date())}).get() (err, res, body) ->
+      foods = JSON.parse(body)['data'].map (data) -> data['cafeteriaId'] + data['title']
+      msg.send foods.join '\n'
+
   # startup
   robot.send envelope, 'むくり'
   setTimeout () ->
