@@ -72,7 +72,7 @@ module.exports = (robot) ->
   new cron '0 30 9 * * *', () ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
-      if data.date == null
+      if data.date == undefined
         msg.send '開催可能な日が　見つけられない　デス'
         msg.send 'https://monstera.herokuapp.com/events/koikijs'
         msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
@@ -95,7 +95,7 @@ module.exports = (robot) ->
     msg.send 'ただいま確認中　デス'
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
-      if data.date == null
+      if data.date == undefined
         msg.send '開催可能な日が　見つけられない　デス'
         msg.send 'https://monstera.herokuapp.com/events/koikijs'
         msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
