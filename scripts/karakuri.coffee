@@ -73,9 +73,9 @@ module.exports = (robot) ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
       if data.date == undefined
-        msg.send '開催可能な日が　見つけられない　デス'
-        msg.send 'https://monstera.herokuapp.com/events/koikijs'
-        msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
+        robot.send envelope, '開催可能な日が　見つけられない　デス'
+        robot.send envelope, 'https://monstera.herokuapp.com/events/koikijs'
+        robot.send envelope, 'みなさん　予定の空いている日を入れてほしい　デス'
       if data.date == moment.utc().startOf('date').format()
         robot.send envelope, '本日は　koiki　の開催日　デス'
         robot.send envelope, 'みなさま　お遅れにならないよう　お願いします　デス'
