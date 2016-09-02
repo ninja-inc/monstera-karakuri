@@ -125,22 +125,31 @@ module.exports = (robot) ->
     if user == 'nabnab'
       msg.send msg.random JSON.parse(robot.brain.get('nabs')||'[]')
 
-  robot.hear /(|ひる|昼|よる|夜)(ごはん)(| |　)(9|22)/, (msg) ->
+  robot.hear /^(|ひる|昼|よる|夜|ばん|晩)(ごはん)(| |　)(9|22)/, (msg) ->
      toYYYYMMDD = (date) ->
        return date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2)
+
+     daynight = if msg.match[1] then msg.match[1] else
+                if new Date().getHours() < 15 then 'ひる' else 'よる'
+
+     mealTime = {
+       'ひる': 1,
+       '昼': 1,
+       'よる': 2,
+       '夜': 2,
+       'ばん': 2,
+       '晩': 2
+     }[daynight]
      cafeteriaApi = 'https://rakuten-towerman.azurewebsites.net/towerman-restapi/rest/cafeteria/menulist'
-     robot.http(cafeteriaApi).query(menuDate: toYYYYMMDD(new Date())).get() (err, res, body) ->
+
+     floor = if msg.match[4] then msg.match[4] else '9'
+     cafeteriaId = floor.match(/(^\d+)/)[1] + 'F'
+     console.log daynight, mealTime, floor, cafeteriaId
+
+     robot.http(cafeteriaApi).query(menuDate: toYYYYMMDD(new Date()), mealTime: mealTime, cafeteriaId: cafeteriaId).get() (err, res, body) ->
        foods = JSON.parse(body)['data']
-       daynight = msg.match[1]
-       if daynight
-         if daynight == 'ひる' || daynight == '昼'
-           foods = foods.filter (data) -> return data.mealTime == 1
-         if daynight == 'よる' || daynight == '夜' || daynight == '晩'
-           foods = foods.filter (data) -> return data.mealTime == 2
-       if msg.match[4]
-         foods = foods.filter (data) -> return data.cafeteriaId.indexOf(msg.match[4]) != -1
-       foods = foods.map (data) -> return data['cafeteriaId'] + ' ' + data['title']
-       msg.send foods.join '\n'
+       foods = foods.map (data) -> return "#{data.imageURL}\n#{data.menuType} #{data.title}\n"
+       msg.send "本日の#{daynight}ごはん　は　こちらデス\n#{foods.join '\n'}"
 
   # startup
   robot.send envelope, 'むくり'
