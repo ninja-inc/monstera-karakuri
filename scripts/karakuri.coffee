@@ -125,13 +125,14 @@ module.exports = (robot) ->
     if user == 'nabnab'
       msg.send msg.random JSON.parse(robot.brain.get('nabs')||'[]')
 
-  robot.hear /ごはん|はらへ/, (msg) ->
-    toYYYYMMDD = (date) ->
-      return date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2)
-    cafeteriaApi = 'https://rakuten-towerman.azurewebsites.net/towerman-restapi/rest/cafeteria/menulist'
-    robot.http(cafeteriaApi).query(menuDate: toYYYYMMDD(new Date())).get() (err, res, body) ->
-      foods = JSON.parse(body)['data'].map (data) -> return data['cafeteriaId'] + ' ' + data['title']
-      msg.send foods.join '\n'
+  robot.hear /(ごはん)(| |　)(9|22)/, (msg) ->
+     toYYYYMMDD = (date) ->
+       return date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2)
+     cafeteriaApi = 'https://rakuten-towerman.azurewebsites.net/towerman-restapi/rest/cafeteria/menulist'
+     robot.http(cafeteriaApi).query(menuDate: toYYYYMMDD(new Date())).get() (err, res, body) ->
+       foods = JSON.parse(body)['data'].filter (data) -> return data.cafeteriaId.indexOf(msg.match[3]) != -1
+       foods = foods.map (data) -> return data['cafeteriaId'] + ' ' + data['title']
+       msg.send foods.join '\n'
 
   # startup
   robot.send envelope, 'むくり'
