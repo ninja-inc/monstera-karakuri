@@ -125,7 +125,7 @@ module.exports = (robot) ->
     if user == 'nabnab'
       msg.send msg.random JSON.parse(robot.brain.get('nabs')||'[]')
 
-  robot.hear /^(|ひる|昼|よる|夜|ばん|晩)(ごはん|ご飯)( |　)?(9|22)?/, (msg) ->
+  robot.hear /^(|ひる|昼|よる|夜|ばん|晩)(ごはん|ご飯|めし|飯)( |　)?(9|22)?F?$/i, (msg) ->
      toYYYYMMDD = (date) ->
        return date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2)
 
@@ -144,7 +144,6 @@ module.exports = (robot) ->
 
      floor = if msg.match[4] then msg.match[4] else '9'
      cafeteriaId = floor.match(/^(\d+)/)[1] + 'F'
-     console.log daynight, mealTime, floor, cafeteriaId
 
      robot.http(cafeteriaApi).query(menuDate: toYYYYMMDD(new Date()), mealTime: mealTime, cafeteriaId: cafeteriaId).get() (err, res, body) ->
        foods = JSON.parse(body)['data']
