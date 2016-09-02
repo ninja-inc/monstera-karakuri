@@ -150,7 +150,7 @@ module.exports = (robot) ->
        foods = JSON.parse(body)['data']
        msg.send "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
        foods = foods.map (data) ->
-         msg.send "#{data.imageURL}\n#{data.menuType} #{data.title}\n"
+         msg.send "#{data.imageURL}\n#{data.menuType}: #{data.title}\n"
 
   # startup
   robot.send envelope, 'むくり'
