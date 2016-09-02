@@ -125,7 +125,7 @@ module.exports = (robot) ->
     if user == 'nabnab'
       msg.send msg.random JSON.parse(robot.brain.get('nabs')||'[]')
 
-  robot.hear /^(|ひる|昼|よる|夜|ばん|晩)(ごはん)( |　)?(9|22)?/, (msg) ->
+  robot.hear /^(|ひる|昼|よる|夜|ばん|晩)(ごはん|ご飯)( |　)?(9|22)?/, (msg) ->
      toYYYYMMDD = (date) ->
        return date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2)
 
@@ -150,12 +150,7 @@ module.exports = (robot) ->
        foods = JSON.parse(body)['data']
        msg.send "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
        foods = foods.map (data) ->
-         robot.emit 'slack.attachment',
-           channel: msg.envelope.message.room
-           content:
-             author_name: "karakuri"
-             image_url: data.imageURL
-         msg.send "#{data.menuType} #{data.title}\n"
+         msg.send "#{data.imageURL}\n#{data.menuType} #{data.title}\n"
 
   # startup
   robot.send envelope, 'むくり'
