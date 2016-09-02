@@ -148,8 +148,14 @@ module.exports = (robot) ->
 
      robot.http(cafeteriaApi).query(menuDate: toYYYYMMDD(new Date()), mealTime: mealTime, cafeteriaId: cafeteriaId).get() (err, res, body) ->
        foods = JSON.parse(body)['data']
-       foods = foods.map (data) -> return "#{data.imageURL}\n#{data.menuType} #{data.title}\n"
-       msg.send "本日の#{daynight}ごはん　は　こちらデス\n#{foods.join '\n'}"
+       msg.send "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
+       foods = foods.map (data) ->
+         robot.emit 'slack.attachment',
+           channel: msg.envelope.message.room
+           content:
+             author_name: "karakuri"
+             image_url: data.imageURL
+         msg.send "#{data.menuType} #{data.title}\n"
 
   # startup
   robot.send envelope, 'むくり'
