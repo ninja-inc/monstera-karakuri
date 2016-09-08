@@ -87,6 +87,9 @@ module.exports = (robot) ->
       if data.date && date == moment.utc().startOf('date').add(1, 'days').format()
         robot.send envelope, '明日は　koiki　の開催日　デス'
         robot.send envelope, 'みなさま　お忘れの無いよう　お願いします　デス'
+      if data.date && date == moment.utc().startOf('date').add(3, 'days').format()
+        robot.send envelope, '三日後に　koiki　が開催されます　デス'
+        robot.send envelope, 'みなさま　お忘れの無いよう　お願いします　デス'
       if data.date && date == moment.utc().startOf('date').add(7, 'days').format()
         robot.send envelope, "次回　koiki　の開催予定日は　#{moment(data.date).format('LL (ddd)')}　デス"
         robot.send taka66,   "場所の予約のほど　よろしくお願いします　デス"
