@@ -69,24 +69,25 @@ module.exports = (robot) ->
   , null, true, "Asia/Tokyo"
 
   # Koiki
-  new cron '0 30 9 * * *', () ->
+  new cron '0 35 9 * * *', () ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
+      date = moment.utc(date.date).startOf('date').format()
       if data.date == undefined
         robot.send envelope, '開催可能な日が　見つけられない　デス'
         robot.send envelope, 'https://monstera.herokuapp.com/events/koikijs'
         robot.send envelope, 'みなさん　予定の空いている日を入れてほしい　デス'
-      if data.date == moment.utc().startOf('date').format()
+      if data.date && date == moment.utc().startOf('date').format()
         robot.send envelope, '本日は　koiki　の開催日　デス'
         robot.send envelope, 'みなさま　お遅れにならないよう　お願いします　デス'
         robot.send envelope, 'ご飯　隊長: ninja-inc'
         robot.send envelope, '場所取り　隊長: sideroad'
         robot.send envelope, '議事録　隊長: nabnab'
         robot.send envelope, 'デザイン　隊長: taka66'
-      if data.date == moment.utc().startOf('date').add(1, 'days').format()
+      if data.date && date == moment.utc().startOf('date').add(1, 'days').format()
         robot.send envelope, '明日は　koiki　の開催日　デス'
         robot.send envelope, 'みなさま　お忘れの無いよう　お願いします　デス'
-      if data.date == moment.utc().startOf('date').add(7, 'days').format()
+      if data.date && date == moment.utc().startOf('date').add(7, 'days').format()
         robot.send envelope, "次回　koiki　の開催予定日は　#{moment(data.date).format('LL (ddd)')}　デス"
         robot.send taka66,   "場所の予約のほど　よろしくお願いします　デス"
   , null, true, "Asia/Tokyo"
