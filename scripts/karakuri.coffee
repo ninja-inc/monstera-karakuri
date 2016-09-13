@@ -6,6 +6,7 @@ cron = require('cron').CronJob
 envelope = room: "C0JHEPQ94" # general
 taka66 = room: "C0JHEPQ94", user: "U0JH92D60" # taka66
 # envelope = room: "C217B7QG0" # test
+mode = 'normal'
 
 module.exports = (robot) ->
 
@@ -13,6 +14,23 @@ module.exports = (robot) ->
   robot.error (err, res) ->
     robot.logger.error err
     robot.logger.error res
+
+  robot.hear /^(js|sh)$/, (msg) ->
+    mode = msg.match[1];
+    msg.send "#{mode} モードを起動します　デス"
+
+  robot.hear /^eof$/, (msg) ->
+    msg.send "#{mode} モードを終了します　デス"
+    mode = 'normal';
+
+  robot.hear /^(?!(js|sh|eof)).+$/, (msg) ->
+    if msg.match[0]
+      switch mode
+        when 'js'
+          evaluated = String( eval msg.match[0] )
+          msg.send evaluated
+        when 'sh'
+          String( eval "require('child_process').exec('#{msg.match[0]}', function(e, so, se){msg.send(so)})" )
 
   robot.hear /^karakuri put (.*)/, (msg) ->
     msgs = JSON.parse(robot.brain.get('msgs')||'[]')
