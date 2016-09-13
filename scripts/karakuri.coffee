@@ -92,6 +92,7 @@ module.exports = (robot) ->
         robot.send envelope, 'みなさま　お忘れの無いよう　お願いします　デス'
       if data.date && date == moment.utc().startOf('date').add(7, 'days').format()
         robot.send envelope, "次回　koiki　の開催予定日は　#{moment(data.date).format('LL (ddd)')}　デス"
+        robot.send envelope, "https://www.google.com/calendar/render?action=TEMPLATE&text=koikijs&dates=#{moment(data.date).format('YYYYMMDD')}000000/#{moment(data.date).format('YYYYMMDD')}T235959&trp=undefined&trp=true&sprop="
         robot.send taka66,   "場所の予約のほど　よろしくお願いします　デス"
   , null, true, "Asia/Tokyo"
 
@@ -105,6 +106,8 @@ module.exports = (robot) ->
         msg.send 'みなさん　予定の空いている日を入れてほしい　デス'
       else
         msg.send "つぎの開催予定日は　#{moment(data.date).format('LL (ddd)')}　デス"
+        msg.send "次回　koiki　の開催予定日は　#{moment(data.date).format('LL (ddd)')}　デス"
+        msg.send "グーグルカレンダーに登録してください　デス\n https://www.google.com/calendar/render?action=TEMPLATE&text=koikijs&dates=#{moment(data.date).format('YYYYMMDD')}T000000/#{moment(data.date).format('YYYYMMDD')}T235959&trp=undefined&trp=true&sprop="
 
   # Nabuchi
   robot.hear /^nab put (.*)/, (msg) ->
