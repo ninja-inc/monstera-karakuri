@@ -77,20 +77,11 @@ module.exports = (robot) ->
   robot.hear /こんにちは/i, (msg) ->
     msg.send "今日は、良いお日和　デス"
 
-  # Wake up servers
-  new cron '0 27 9 * * *', () ->
-    robot.http('https://monstera.herokuapp.com').get() (err, res, body) ->
-  , null, true, "Asia/Tokyo"
-
-  new cron '0 28 9 * * *', () ->
-    robot.http('https://chaus.herokuapp.com').get() (err, res, body) ->
-  , null, true, "Asia/Tokyo"
-
   # Koiki
   new cron '0 35 9 * * *', () ->
     robot.http('https://monstera.herokuapp.com/api/koikijs/next').get() (err, res, body) ->
       data = JSON.parse(body)
-      date = moment.utc(date.date).startOf('date').format()
+      date = moment.utc(data.date).startOf('date').format()
       if data.date == undefined
         robot.send envelope, '開催可能な日が　見つけられない　デス'
         robot.send envelope, 'https://monstera.herokuapp.com/events/koikijs'
@@ -107,10 +98,13 @@ module.exports = (robot) ->
         robot.send envelope, 'みなさま　お忘れの無いよう　お願いします　デス'
       if data.date && date == moment.utc().startOf('date').add(3, 'days').format()
         robot.send envelope, '三日後に　koiki　が開催されます　デス'
+        robot.send envelope, "グーグルカレンダーに登録してください　デス\n https://www.google.com/calendar/render?action=TEMPLATE&text=koikijs&dates=#{moment(data.date).format('YYYYMMDD')}T000000/#{moment(data.date).format('YYYYMMDD')}T235959&trp=undefined&trp=true&sprop="
         robot.send envelope, 'みなさま　お忘れの無いよう　お願いします　デス'
-      if data.date && date == moment.utc().startOf('date').add(7, 'days').format()
+      if data.date && date == moment.utc().startOf('date').add(7, 'days').format() ||
+         data.date && date == moment.utc().startOf('date').add(10, 'days').format() ||
+         data.date && date == moment.utc().startOf('date').add(14, 'days').format()
         robot.send envelope, "次回　koiki　の開催予定日は　#{moment(data.date).format('LL (ddd)')}　デス"
-        robot.send envelope, "https://www.google.com/calendar/render?action=TEMPLATE&text=koikijs&dates=#{moment(data.date).format('YYYYMMDD')}000000/#{moment(data.date).format('YYYYMMDD')}T235959&trp=undefined&trp=true&sprop="
+        robot.send envelope, "グーグルカレンダーに登録してください　デス\n https://www.google.com/calendar/render?action=TEMPLATE&text=koikijs&dates=#{moment(data.date).format('YYYYMMDD')}T000000/#{moment(data.date).format('YYYYMMDD')}T235959&trp=undefined&trp=true&sprop="
         robot.send taka66,   "場所の予約のほど　よろしくお願いします　デス"
   , null, true, "Asia/Tokyo"
 
