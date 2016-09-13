@@ -19,11 +19,11 @@ module.exports = (robot) ->
     mode = msg.match[1];
     msg.send "#{mode} モードを起動します　デス"
 
-  robot.hear /^eof$/, (msg) ->
+  robot.hear /^balse$/, (msg) ->
     msg.send "#{mode} モードを終了します　デス"
     mode = 'normal';
 
-  robot.hear /^(?!(js|sh|eof)).+$/, (msg) ->
+  robot.hear /^(?!(js|sh|balse)).+$/, (msg) ->
     if msg.match[0]
       switch mode
         when 'js'
@@ -129,16 +129,24 @@ module.exports = (robot) ->
 
   # Nabuchi
   robot.hear /^nab put (.*)/, (msg) ->
-    nabs = JSON.parse(robot.brain.get('nabs')||'[]')
-    nabs.push msg.match[1]
-    robot.brain.set('nabs', JSON.stringify nabs)
-    msg.send msg.match[1] + ' が追加されました　デス'
+    user = msg.envelope.user.name.trim().toLowerCase()
+    if user != 'nabnab'
+      nabs = JSON.parse(robot.brain.get('nabs')||'[]')
+      nabs.push msg.match[1]
+      robot.brain.set('nabs', JSON.stringify nabs)
+      msg.send msg.match[1] + ' が追加されました　デス'
+    else
+      msg.send '403 ナブチ様の要求は　受け入れられません'
 
   robot.hear /^nab delete (\d+)/, (msg) ->
-    nabs = JSON.parse(robot.brain.get('nabs')||'[]')
-    deleted = nabs.splice msg.match[1], 1
-    robot.brain.set('nabs', JSON.stringify nabs)
-    msg.send deleted[0] + ' が削除されました　デス'
+    user = msg.envelope.user.name.trim().toLowerCase()
+    if user != 'nabnab'
+      nabs = JSON.parse(robot.brain.get('nabs')||'[]')
+      deleted = nabs.splice msg.match[1], 1
+      robot.brain.set('nabs', JSON.stringify nabs)
+      msg.send deleted[0] + ' が削除されました　デス'
+    else
+      msg.send '403 ナブチ様の要求は　受け入れられません'
 
   robot.hear /^nab all$/, (msg) ->
     nabs = JSON.parse(robot.brain.get('nabs')||'[]')
