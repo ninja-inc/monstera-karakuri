@@ -5,6 +5,7 @@ moment.locale 'ja'
 cron = require('cron').CronJob
 envelope = room: "C0JHEPQ94" # general
 test = room: "C217B7QG0" # test
+techtopics = room: "C2LKUHVPD" # techtopics
 taka66 = room: "C0JHEPQ94", user: "U0JH92D60" # taka66
 # envelope = room: "C217B7QG0" # test
 mode = 'normal'
@@ -21,8 +22,7 @@ module.exports = (robot) ->
     Object.keys(users).map (id) ->
       msg.reply "#{id} #{users[id].name}"
 
-  sendDM = (userName, message) ->
-    userId = robot.adapter.client.getUserByName(userName)?.id
+  sendDM = (userId, message) ->
     return unless userId?
 
     robot.adapter.client.openDM userId, (data) ->
@@ -77,15 +77,15 @@ module.exports = (robot) ->
     msg.send evaluated
 
   # Topics
-  # new cron '0 0 15 * * *', () ->
-  #   robot.http("https://chaus.herokuapp.com/apis/karakuri/tags").get() (err, res, body) ->
-  #     tags = JSON.parse(body).items.map (item) ->
-  #       return item.name
-  #     tag = tags[Math.floor(Math.random() * tags.length)]
-  #     robot.http("http://qiita.com/api/v2/tags/#{tag}/items?page=1&per_page=1").get() (err, res, body) ->
-  #       data = JSON.parse(body)
-  #       robot.send envelope, "３時の #{tag} オヤツ　デス #{data[0].url}"
-  # , null, true, "Asia/Tokyo"
+  new cron '0 0 15 * * *', () ->
+    robot.http("https://chaus.herokuapp.com/apis/karakuri/tags").get() (err, res, body) ->
+      tags = JSON.parse(body).items.map (item) ->
+        return item.name
+      tag = tags[Math.floor(Math.random() * tags.length)]
+      robot.http("http://qiita.com/api/v2/tags/#{tag}/items?page=1&per_page=1").get() (err, res, body) ->
+        data = JSON.parse(body)
+        robot.send techtopics, "３時の #{tag} オヤツ　デス #{data[0].url}"
+  , null, true, "Asia/Tokyo"
 
   # Greeting
   robot.hear /こんばんは/i, (msg) ->
