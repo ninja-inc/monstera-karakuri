@@ -216,17 +216,19 @@ module.exports = (robot) ->
   , null, true, "Asia/Tokyo"
 
   # testing attachement
-  robot.emit 'slack.attachment',
-    message: 'aaaaa'
-    content:
-      # see https://api.slack.com/docs/attachments
-      text: "Attachment text"
-      fallback: "Attachment fallback"
-      fields: [{
-        title: "Field title"
-        value: "Field value"
-      }]
-      channel: "#test"
+  robot.respond /hogepiyo/, (msg) ->
+    data =
+      content:
+        color: "00ff00"
+        fallback: "Sumally ....."
+        title: "Title...."
+        title_link: "htto://example.com"
+        text: "Body ......."
+        mrkdwn_in: ["text"]
+      channel: msg.envelope.room
+      username: "bot_name"
+      icon_emoji: ":emoji:"
+    robot.emit "slack.attachment", data
 
   # startup
   robot.send test, 'むくり'
