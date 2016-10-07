@@ -22,12 +22,9 @@ module.exports = (robot) ->
     Object.keys(users).map (id) ->
       msg.reply "#{id} #{users[id].name}"
 
-  sendDM = (userId, message) ->
-    return unless userId?
-
-    robot.adapter.client.openDM userId, (data) ->
-      robot.send test, data
-      robot.send {room: userId}, message
+  sendDM = (name, message) ->
+    room = robot.adapter.client.rtm.dataStore.getDMByName name
+    robot.messageRoom room.id, message
 
   # error handling
   robot.error (err, res) ->
