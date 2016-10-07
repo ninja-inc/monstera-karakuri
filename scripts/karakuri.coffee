@@ -12,12 +12,14 @@ mode = 'normal'
 module.exports = (robot) ->
 
   robot.hear /^channels$/, (msg) ->
-    robot.adapter.client.rtm.dataStore.channels.map (id) ->
-      msg.reply "#{id} #{robot.adapter.client.rtm.dataStore.getChannelGroupOrDMById(id).name}"
+    channels = robot.adapter.client.rtm.dataStore.channels
+    Object.keys(channels).map (id) ->
+      msg.reply "#{id} #{channels[id].name}"
 
   robot.hear /^users$/, (msg) ->
-    robot.adapter.client.rtm.dataStore.users.map (id) ->
-      msg.reply "#{id} #{robot.adapter.client.rtm.dataStore.getUserById(id).name}"
+    users = robot.adapter.client.rtm.dataStore.users
+    Object.keys(users).map (id) ->
+      msg.reply "#{id} #{users[id].name}"
 
   sendDM = (userName, message) ->
     userId = robot.adapter.client.getUserByName(userName)?.id
