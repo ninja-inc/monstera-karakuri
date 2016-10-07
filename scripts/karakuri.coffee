@@ -4,18 +4,27 @@ moment = require 'moment'
 moment.locale 'ja'
 cron = require('cron').CronJob
 envelope = room: "C0JHEPQ94" # general
+test = room: "C217B7QG0" # test
 taka66 = room: "C0JHEPQ94", user: "U0JH92D60" # taka66
 # envelope = room: "C217B7QG0" # test
 mode = 'normal'
 
 module.exports = (robot) ->
 
+  robot.hear /^channels$/, (msg) ->
+    robot.adapter.client.rtm.dataStore.channels.map (id) ->
+      msg.reply "#{id} #{robot.adapter.client.rtm.dataStore.getChannelGroupOrDMById(id).name}"
+
+  robot.hear /^users$/, (msg) ->
+    robot.adapter.client.rtm.dataStore.users.map (id) ->
+      msg.reply "#{id} #{robot.adapter.client.rtm.dataStore.getUserById(id).name}"
+
   sendDM = (userName, message) ->
     userId = robot.adapter.client.getUserByName(userName)?.id
     return unless userId?
 
     robot.adapter.client.openDM userId, (data) ->
-      robot.send {room: userName}, message
+      robot.send {room: userId}, message
 
   # error handling
   robot.error (err, res) ->
@@ -186,9 +195,9 @@ module.exports = (robot) ->
          msg.send {room: msg.envelope.user.name}, "#{data.imageURL}\n#{data.menuType}: #{data.title}\n"
 
   # startup
-  # robot.send envelope, 'むくり'
-  # setTimeout () ->
-  #   msgs = JSON.parse(robot.brain.get('msgs')||'[]')
-  #   message = msgs[Math.floor(Math.random() * msgs.length)] || ''
-  #   robot.send envelope, message
-  # , 5000
+  robot.send test, 'むくり'
+  setTimeout () ->
+    msgs = JSON.parse(robot.brain.get('msgs')||'[]')
+    message = msgs[Math.floor(Math.random() * msgs.length)] || ''
+    robot.send test, message
+  , 5000
