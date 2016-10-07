@@ -218,6 +218,7 @@ module.exports = (robot) ->
   # testing attachement
   robot.hear /hogepiyo/, (msg) ->
     data =
+      message: "hagepiyo"
       content:
         color: "00ff00"
         fallback: "Sumally ....."
