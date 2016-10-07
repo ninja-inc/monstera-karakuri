@@ -174,9 +174,9 @@ module.exports = (robot) ->
 
      robot.http(cafeteriaApi).query(menuDate: toYYYYMMDD(new Date()), mealTime: mealTime, cafeteriaId: cafeteriaId).get() (err, res, body) ->
        foods = JSON.parse(body)['data']
-       msg.reply "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
+       msg.send {room: msg.envelope.user.name}, "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
        foods = foods.map (data) ->
-         msg.reply "#{data.imageURL}\n#{data.menuType}: #{data.title}\n"
+         msg.send {room: msg.envelope.user.name}, "#{data.imageURL}\n#{data.menuType}: #{data.title}\n"
 
   # startup
   # robot.send envelope, 'むくり'
