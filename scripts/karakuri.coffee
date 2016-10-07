@@ -215,6 +215,19 @@ module.exports = (robot) ->
         robot.send gohan, "#{data.imageURL}\n#{data.menuType}: #{data.title}\n"
   , null, true, "Asia/Tokyo"
 
+  # testing attachement
+  robot.emit 'slack.attachment',
+    message: 'aaaaa'
+    content:
+      # see https://api.slack.com/docs/attachments
+      text: "Attachment text"
+      fallback: "Attachment fallback"
+      fields: [{
+        title: "Field title"
+        value: "Field value"
+      }]
+      channel: "#test"
+
   # startup
   robot.send test, 'むくり'
   setTimeout () ->
