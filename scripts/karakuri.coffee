@@ -216,7 +216,7 @@ module.exports = (robot) ->
   , null, true, "Asia/Tokyo"
 
   # testing attachement
-  robot.respond /hogepiyo/, (msg) ->
+  robot.hear /hogepiyo/, (msg) ->
     data =
       content:
         color: "00ff00"
@@ -226,8 +226,6 @@ module.exports = (robot) ->
         text: "Body ......."
         mrkdwn_in: ["text"]
       channel: msg.envelope.room
-      username: "bot_name"
-      icon_emoji: ":emoji:"
     robot.emit "slack.attachment", data
 
   # startup
