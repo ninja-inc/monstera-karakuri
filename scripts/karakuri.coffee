@@ -5,6 +5,7 @@ moment.locale 'ja'
 cron = require('cron').CronJob
 envelope = room: "C0JHEPQ94" # general
 test = room: "C217B7QG0" # test
+gohan = room: "C2L1Y13R6" # gohan
 techtopics = room: "C2LKUHVPD" # techtopics
 taka66 = room: "C0JHEPQ94", user: "U0JH92D60" # taka66
 # envelope = room: "C217B7QG0" # test
@@ -190,9 +191,29 @@ module.exports = (robot) ->
 
      robot.http(cafeteriaApi).query(menuDate: toYYYYMMDD(new Date()), mealTime: mealTime, cafeteriaId: cafeteriaId).get() (err, res, body) ->
        foods = JSON.parse(body)['data']
-       msg.send {room: msg.envelope.user.name}, "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
+       sendDM msg.envelope.user.name, "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
        foods = foods.map (data) ->
-         msg.send {room: msg.envelope.user.name}, "#{data.imageURL}\n#{data.menuType}: #{data.title}\n"
+         sendDM msg.envelope.user.name, "#{data.imageURL}\n#{data.menuType}: #{data.title}\n"
+
+  new cron '0 0 11 * * *', () ->
+    mealTime = 1
+    cafeteriaId = '9F'
+    robot.http("https://rakuten-towerman.azurewebsites.net/towerman-restapi/rest/cafeteria/menulist").query(menuDate: toYYYYMMDD(new Date()), mealTime: mealTime, cafeteriaId: cafeteriaId).get() (err, res, body) ->
+      foods = JSON.parse(body)['data']
+      robot.send gohan, "本日の昼ごはん　#{cafeteriaId}は　こちらデス"
+      foods = foods.map (data) ->
+        robot.send gohan, "#{data.imageURL}\n#{data.menuType}: #{data.title}\n"
+  , null, true, "Asia/Tokyo"
+
+  new cron '0 0 19 * * *', () ->
+    mealTime = 2
+    cafeteriaId = '9F'
+    robot.http("https://rakuten-towerman.azurewebsites.net/towerman-restapi/rest/cafeteria/menulist").query(menuDate: toYYYYMMDD(new Date()), mealTime: mealTime, cafeteriaId: cafeteriaId).get() (err, res, body) ->
+      foods = JSON.parse(body)['data']
+      robot.send gohan, "本日の夜ごはん　#{cafeteriaId}は　こちらデス"
+      foods = foods.map (data) ->
+        robot.send gohan, "#{data.imageURL}\n#{data.menuType}: #{data.title}\n"
+  , null, true, "Asia/Tokyo"
 
   # startup
   robot.send test, 'むくり'
