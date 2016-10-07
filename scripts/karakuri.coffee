@@ -10,6 +10,13 @@ mode = 'normal'
 
 module.exports = (robot) ->
 
+  sendDM = (userName, message) ->
+    userId = robot.adapter.client.getUserByName(userName)?.id
+    return unless userId?
+
+    robot.adapter.client.openDM userId, (data) ->
+      robot.send {room: userName}, message
+
   # error handling
   robot.error (err, res) ->
     robot.logger.error err
