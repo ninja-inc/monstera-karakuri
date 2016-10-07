@@ -26,7 +26,7 @@ module.exports = (robot) ->
     return unless userId?
 
     robot.adapter.client.openDM userId, (data) ->
-      robot.send {room: test}, data
+      robot.send test, data
       robot.send {room: userId}, message
 
   # error handling
