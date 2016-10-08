@@ -24,7 +24,7 @@ module.exports = (robot) ->
       .query(menuDate: toYYYYMMDD(new Date()), mealTime: mealTime, cafeteriaId: cafeteriaId)
       .get() (err, res, body) ->
         foods = JSON.parse(body)['data']
-        sender envelope, "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
+        sender gohan, "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
         attachments = []
         foods.map (data) ->
           imageURL = data.imageURL.replace(/^https\:\/\//, '')
