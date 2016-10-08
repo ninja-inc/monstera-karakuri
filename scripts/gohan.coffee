@@ -7,9 +7,14 @@ gohan = room: "C2L1Y13R6" # gohan
 
 module.exports = (robot) ->
 
-  getFoods = (daynight, cafeteriaId, date) ->
+  getFoods = (datestr, daynight, cafeteriaId) ->
     toYYYYMMDD = (date) ->
       return date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2)
+     date = if datestr == '今日の' then moment().toDate() else
+            if datestr == '本日の' then moment().toDate() else
+            if datestr == '明日の' then moment().add(1, 'days').toDate() else
+            if datestr == '明後日の' then moment().add(2, 'days').toDate() else
+            if datestr == '明々後日の' then moment().add(3, 'days').toDate() else moment().toDate()
 
     mealTime = {
        'ひる': 1,
@@ -24,7 +29,7 @@ module.exports = (robot) ->
       .query(menuDate: toYYYYMMDD(date), mealTime: mealTime, cafeteriaId: cafeteriaId)
       .get() (err, res, body) ->
         foods = JSON.parse(body)['data']
-        robot.send gohan, "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
+        robot.send gohan, "#{datestr}#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
         attachments = []
         foods.map (data) ->
           imageURL = data.imageURL.replace(/^https\:\/\//, '')
@@ -43,22 +48,19 @@ module.exports = (robot) ->
             .post(encodeURIComponent("payload=#{payload}"))
 
   # Direct message
-  robot.hear /^(|今日の|明日の|明後日の|明々後日の)(|ひる|昼|よる|夜|ばん|晩)(ごはん|ご飯|めし|飯)( |　)?(9|22)?F?$/i, (msg) ->
-     date = if msg.match[1] == '今日の' then moment().toDate() else
-            if msg.match[1] == '明日の' then moment().add(1, 'days').toDate() else
-            if msg.match[1] == '明後日の' then moment().add(2, 'days').toDate() else
-            if msg.match[1] == '明々後日の' then moment().add(3, 'days').toDate() else moment().toDate()
+  robot.hear /^(|今日の|本日の|明日の|明後日の|明々後日の)(|ひる|昼|よる|夜|ばん|晩)(ごはん|ご飯|めし|飯)( |　)?(9|22)?F?$/i, (msg) ->
+     datestr = if msg.match[1] then msg.match[1] else '本日の'
      daynight = if msg.match[2] then msg.match[2] else
                 if new Date().getHours() < 15 then 'ひる' else 'よる'
      floor = if msg.match[5] then msg.match[5] else '9'
      cafeteriaId = floor.match(/^(\d+)/)[1] + 'F'
 
-     getFoods daynight, cafeteriaId, date
+     getFoods datestr, daynight, cafeteriaId
 
   new cron '0 0 11 * * *', () ->
-    getFoods '昼', '9F', moment().toDate()
+    getFoods '本日の', '昼', '9F'
   , null, true, "Asia/Tokyo"
 
   new cron '0 0 19 * * *', () ->
-    getFoods '夜', '9F', moment().toDate()
+    getFoods '本日の', '夜', '9F'
   , null, true, "Asia/Tokyo"
