@@ -41,12 +41,12 @@ module.exports = (robot) ->
             "image_url": "https://images.weserv.nl/?url=#{imageURL}&w=200&h=200",
             "footer": "#{data.calories} kcal #{price}"
           })
-          payload = JSON.stringify({attachments: attachments});
-          console.log payload
-          console.log process.env.HUBOT_SLACK_INCOMING_WEBHOOK
-          robot.http(process.env.HUBOT_SLACK_INCOMING_WEBHOOK)
-            .post("payload=#{payload}") (err, res, body) ->
-              console.log err, res, body
+        json = JSON.stringify({attachments: attachments});
+        payload = "payload=" + encodeURIComponent(json)
+        robot.http(process.env.HUBOT_SLACK_INCOMING_WEBHOOK_GOHAN)
+          .header('content-type', 'application/x-www-form-urlencoded')
+          .post(payload) (err, res, body) ->
+            console.log err
 
   # Direct message
   robot.hear /^(|今日の|本日の|明日の|明後日の|明々後日の)(|ひる|昼|よる|夜|ばん|晩)(ごはん|ご飯|めし|飯)( |　)?(9|22)?F?$/i, (msg) ->
