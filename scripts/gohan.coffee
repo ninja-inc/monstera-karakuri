@@ -45,7 +45,7 @@ module.exports = (robot) ->
           console.log payload
           console.log process.env.HUBOT_SLACK_INCOMING_WEBHOOK
           robot.http(process.env.HUBOT_SLACK_INCOMING_WEBHOOK)
-            .post(encodeURIComponent("payload=#{payload}")) (err, res, body) ->
+            .post("payload=#{payload}") (err, res, body) ->
               console.log err, res, body
 
   # Direct message
