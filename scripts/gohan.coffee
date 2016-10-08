@@ -58,10 +58,10 @@ module.exports = (robot) ->
 
      getFoods datestr, daynight, cafeteriaId
 
-  new cron '0 0 11 * * *', () ->
+  new cron '0 0 11 * * 1-5', () ->
     getFoods '本日の', '昼', '9F'
   , null, true, "Asia/Tokyo"
 
-  new cron '0 0 19 * * *', () ->
+  new cron '0 0 19 * * 1-5', () ->
     getFoods '本日の', '夜', '9F'
   , null, true, "Asia/Tokyo"
