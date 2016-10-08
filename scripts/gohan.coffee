@@ -38,9 +38,9 @@ module.exports = (robot) ->
           })
           payload = JSON.stringify({attachments: attachments});
           console.log payload
-          console.log process.env.HUBOT_SLACK_INCOMING_WEBHOOK 
+          console.log process.env.HUBOT_SLACK_INCOMING_WEBHOOK
           robot.http(process.env.HUBOT_SLACK_INCOMING_WEBHOOK)
-            .post("payload={#{payload}}")
+            .post("payload=#{payload}")
 
   # Direct message
   robot.hear /^(|今日の|明日の|明後日の|明々後日の)(|ひる|昼|よる|夜|ばん|晩)(ごはん|ご飯|めし|飯)( |　)?(9|22)?F?$/i, (msg) ->
