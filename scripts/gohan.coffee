@@ -37,6 +37,8 @@ module.exports = (robot) ->
             "footer": "#{data.calories} kcal #{price}"
           })
           payload = JSON.stringify({attachments: attachments});
+          console.log payload
+          console.log process.env.HUBOT_SLACK_INCOMING_WEBHOOK 
           robot.http(process.env.HUBOT_SLACK_INCOMING_WEBHOOK)
             .post("payload={#{payload}}")
 
