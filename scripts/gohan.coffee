@@ -31,8 +31,8 @@ module.exports = (robot) ->
           price = if data.price > 0 then ", #{data.price}円" else ""
           attachments.push({
             "color": "#36a64f",
-            "title": "#{data.menuType} (#{cafeteriaId})",
-            "text": "#{data.title}",
+            "title": "#{data.title}",
+            "text": "#{data.menuType} (#{cafeteriaId})",
             "image_url": "https://images.weserv.nl/?url=#{imageURL}&w=200&h=200",
             "footer": "#{data.calories} kcal #{price}"
           })
