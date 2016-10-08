@@ -8,14 +8,17 @@ gohan = room: "C2L1Y13R6" # gohan
 module.exports = (robot) ->
 
   getFoods = (daynight, cafeteriaId) ->
-     mealTime = {
+    toYYYYMMDD = (date) ->
+    return date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2)
+
+    mealTime = {
        'ひる': 1,
        '昼': 1,
        'よる': 2,
        '夜': 2,
        'ばん': 2,
        '晩': 2
-     }[daynight]
+    }[daynight]
     cafeteriaApi = 'https://rakuten-towerman.azurewebsites.net/towerman-restapi/rest/cafeteria/menulist'
     robot.http(cafeteriaApi)
       .query(menuDate: toYYYYMMDD(new Date()), mealTime: mealTime, cafeteriaId: cafeteriaId)
@@ -39,9 +42,6 @@ module.exports = (robot) ->
 
   # Direct message
   robot.hear /^(|ひる|昼|よる|夜|ばん|晩)(ごはん|ご飯|めし|飯)( |　)?(9|22)?F?$/i, (msg) ->
-     toYYYYMMDD = (date) ->
-       return date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2)
-
      daynight = if msg.match[1] then msg.match[1] else
                 if new Date().getHours() < 15 then 'ひる' else 'よる'
 
