@@ -7,7 +7,7 @@ gohan = room: "C2L1Y13R6" # gohan
 
 module.exports = (robot) ->
 
-  getFoods = (daynight, cafeteriaId) ->
+  getFoods = (daynight, cafeteriaId, date) ->
     toYYYYMMDD = (date) ->
       return date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2)
 
@@ -21,7 +21,7 @@ module.exports = (robot) ->
     }[daynight]
     cafeteriaApi = 'https://rakuten-towerman.azurewebsites.net/towerman-restapi/rest/cafeteria/menulist'
     robot.http(cafeteriaApi)
-      .query(menuDate: toYYYYMMDD(new Date()), mealTime: mealTime, cafeteriaId: cafeteriaId)
+      .query(menuDate: toYYYYMMDD(date), mealTime: mealTime, cafeteriaId: cafeteriaId)
       .get() (err, res, body) ->
         foods = JSON.parse(body)['data']
         robot.send gohan, "本日の#{daynight}ごはん　#{cafeteriaId}は　こちらデス"
@@ -41,19 +41,22 @@ module.exports = (robot) ->
             .post("payload={#{payload}}")
 
   # Direct message
-  robot.hear /^(|ひる|昼|よる|夜|ばん|晩)(ごはん|ご飯|めし|飯)( |　)?(9|22)?F?$/i, (msg) ->
-     daynight = if msg.match[1] then msg.match[1] else
+  robot.hear /^(|今日の|明日の|明後日の|明々後日の)(|ひる|昼|よる|夜|ばん|晩)(ごはん|ご飯|めし|飯)( |　)?(9|22)?F?$/i, (msg) ->
+     date = if msg.match[1] == '今日の' then moment().toDate() else
+            if msg.match[1] == '明日の' then moment().add(1, 'days').toDate() else
+            if msg.match[1] == '明後日の' then moment().add(2, 'days').toDate() else
+            if msg.match[1] == '明々後日の' then moment().add(3, 'days').toDate() else moment().toDate()
+     daynight = if msg.match[2] then msg.match[2] else
                 if new Date().getHours() < 15 then 'ひる' else 'よる'
-
-     floor = if msg.match[4] then msg.match[4] else '9'
+     floor = if msg.match[5] then msg.match[5] else '9'
      cafeteriaId = floor.match(/^(\d+)/)[1] + 'F'
 
-     getFoods daynight, cafeteriaId
+     getFoods daynight, cafeteriaId, date
 
   new cron '0 0 11 * * *', () ->
-    getFoods '昼', '9F'
+    getFoods '昼', '9F', moment().toDate()
   , null, true, "Asia/Tokyo"
 
   new cron '0 0 19 * * *', () ->
-    getFoods '夜', '9F'
+    getFoods '夜', '9F', moment().toDate()
   , null, true, "Asia/Tokyo"
